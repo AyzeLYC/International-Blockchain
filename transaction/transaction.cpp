@@ -20,7 +20,8 @@ namespace transaction {
     };
     unsigned int getTransaction(string transactionId) {
         
-        
+        node.sendDatas("get transaction " + transactionId);
+        string transaction = node.receiveDatas();
         
     };
     unsigned int verifyTransaction(wallet.signature SIGNATURE, wallet.publicKey PUBLICKEY) {
@@ -35,7 +36,7 @@ namespace transaction {
     };
     unsigned int relayTransaction(Transaction TRANSACTION, wallet.signature SIGNATURE) {
         
-        
+        node.sendDatas("send transaction " + SIGNATURE + " " + TRANSACTION)
         
     };
     
