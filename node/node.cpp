@@ -27,7 +27,7 @@ namespace node {
         if (receiverResponse[0 : 4] == "error") {
             
             transmissionErrors += 1;
-            std::cout << "Error when tranmitting some datas to the node " << toAddress << " : " << toPort << " !" << std::endl;
+            std::cout << "Error when transmitting some datas to the node " << toAddress << " : " << toPort << " !" << std::endl;
             
         };
         
