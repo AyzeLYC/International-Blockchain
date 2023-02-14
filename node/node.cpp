@@ -1,3 +1,5 @@
+#include <std>
+
 namespace node {
     
     unsigned int sendDatas(string datas) {
