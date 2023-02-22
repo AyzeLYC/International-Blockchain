@@ -15,9 +15,11 @@ namespace blockchain {
         
     };
     
-    string lastBlockContent = "",
+    string firstBlockHash = "",
+           lastBlockContent = "",
            lastBlockHexUnixDate,
-           lastBlockSha512Hash = "";
+           lastBlockSha512Hash = "",
+           ledger = {};
     
     unsigned int createBlock() {
         
