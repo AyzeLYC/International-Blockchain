@@ -1,10 +1,14 @@
 namespace smartcontract {
     
     \*
-     * Instructions
+     * Instructions / Instruction Binary Code : Calculation
      * 
-     * REM : Remove some datas in the smart contract LEDGER ( database )
-     * 
+     * Add/00000000 binarynumber1 binarynumber2 : binary number 1 + binary number 2
+     * Rem/00000001 binarynumber1 binarynumber2 : binary number 1 - binary number 2
+     * Mul/00000004 binarynumber1 binarynumber2 : binary number 1 * binary number 2
+     * Div/00000003 binarynumber1 binarynumber2 : binary number 1 / binary number 2
+     * Squ/00000004 binarynumber : Mul binarynumber binarynumber
+     * Sqr/00000005 binarynumber : √binarynumber
     *\
     
     string ledger = {};
