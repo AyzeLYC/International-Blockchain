@@ -2,8 +2,10 @@
 #include <iostream>
 #include <string>
 
-#include "../wallet/wallet.cpp"
+#include "../derivation/derivation.cpp"
+#include "../hashing/hashing.cpp"
 #include "../transaction/transaction.cpp"
+#include "../wallet/wallet.cpp"
 
 namespace blockchain {
     
