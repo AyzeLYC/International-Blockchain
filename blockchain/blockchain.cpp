@@ -4,6 +4,7 @@
 
 #include "../derivation/derivation.cpp"
 #include "../hashing/hashing.cpp"
+#include "../node/node.cpp"
 #include "../transaction/transaction.cpp"
 #include "../wallet/wallet.cpp"
 
