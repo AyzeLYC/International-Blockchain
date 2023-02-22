@@ -29,7 +29,7 @@ namespace transaction {
     };
     unsigned int verifyTransaction(wallet.signature SIGNATURE, wallet.publicKey PUBLICKEY, Transaction TRANSACTION) {
         
-        if (TRANSACTION[0 : 63] != <uint256_t> 0 && TRANSACTION[64 : 127] < <uint256_t> ) {
+        if (TRANSACTION.length <= 1088 && TRANSACTION[0 : 31] != <uint256_t> 0 && TRANSACTION[32 : 63]) {
             
             
             
