@@ -5,6 +5,8 @@
 
 namespace transaction {
     
+    uint256_t signature;
+    
     struct Transaction {
         
         wallet.publicKey from,
