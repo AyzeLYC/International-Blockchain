@@ -40,12 +40,12 @@ namespace blockchain {
         
         
     };
-    unsigned int verifyBlock(Block BLOCK) {
+    unsigned int verifyBlock(Block BLOCK, transaction.signature SIGNATURE) {
         
         
         
     };
-    unsigned int confirmBlock(Block BLOCK) {
+    unsigned int confirmBlock(Block BLOCK, wallet.privateKey PRIVATEKEY) {
         
         
         
