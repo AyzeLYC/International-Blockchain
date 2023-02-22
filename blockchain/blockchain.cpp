@@ -15,6 +15,7 @@ namespace blockchain {
         string blockId,
                blockHexUnixDate,
                blockTransactions;
+        uint8192_t blockMessage;
         
     };
     
