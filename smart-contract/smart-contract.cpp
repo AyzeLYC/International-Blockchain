@@ -26,17 +26,12 @@ namespace smartcontract {
     
     string ledger = {};
     
-    unsigned int deploy(string orders) {
+    unsigned int DEPLOY(string orders) {
         
         
         
     };
-    unsigned int run(string orders) {
-        
-        
-        
-    };
-    unsigned int delete(string address) {
+    unsigned int RUN(string orders) {
         
         
         
