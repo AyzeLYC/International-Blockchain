@@ -18,6 +18,10 @@ namespace smartcontract {
      * DIV/00001011 byte1 byte2 : Divide each bit of the byte 1 by their respective byte 2 bit
      * SQR/00001100 byte1 : Multiply the byte by itself
      * SRR/00001101 byte1 : Calculate the square root of the byte
+     *
+     * CPY/00001110 address : Copy into the processing
+     * GET/00001111 url : Get some datas from an URL
+     * REM/00010000 addressString : Delete some datas from a datas ledger
     *\
     
     string ledger = {};
