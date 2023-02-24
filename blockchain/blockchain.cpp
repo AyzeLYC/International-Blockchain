@@ -14,7 +14,7 @@ namespace blockchain {
         
         string blockId,
                blockHexUnixDate,
-        uint142606336_t blockTransactions;
+        uint142606336_t blockTransactions; // 16384 transactions per block with a maximum size of 1088 bytes ( 8704 bits ) per transaction
         uint8192_t blockMessage;
         
     };
