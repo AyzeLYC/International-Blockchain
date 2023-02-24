@@ -102,5 +102,10 @@ namespace hashing {
         
         
     };
+    unsigned int yespower(string datas) {
+        
+        
+        
+    };
     
 }
