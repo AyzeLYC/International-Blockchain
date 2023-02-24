@@ -19,7 +19,7 @@ namespace transaction {
         
     };
     
-    unsigned int createTransaction(wallet.publicKey from, wallet.publicKey to, Transaction.transactionId id, Transaction.transactionDate date, Transaction.transactionMessage message) {
+    unsigned int createTransaction(Transaction.from from, Transaction.to to, Transaction.transactionId id, Transaction.transactionDate date, Transaction.transactionMessage message) {
         
         string TRANSACTION = Transaction(from, to, id, date, message);
         
