@@ -29,14 +29,14 @@ namespace transaction {
     unsigned int getTransaction(string transactionId) {
         
         node.sendDatas("get transaction " + transactionId);
-        string transaction = node.receiveDatas();
+        string TRANSACTION = node.receiveDatas();
         
-        return transaction;
+        return TRANSACTION;
         
     };
     unsigned int verifyTransaction(wallet.signature SIGNATURE, Transaction TRANSACTION) {
         
-        if (TRANSACTION.length <= 1088 && TRANSACTION[0 : 31] != <uint256_t> 0 && TRANSACTION[32 : 63] != <uint256_t> 0 &&  TRANSACTION[1088 : TRANSACTION.length - 1] == blockchain.ledger[TRANSACTION[0 : 31]["txs"]] && derivation.secp256k1(SIGNATURE) == derivation.secp256k1(TRANSACTION, TRANSACTION[0 : 31])) {
+        if (TRANSACTION.length <= 3136 && TRANSACTION[0 : 31] != <uint256_t> 0 && TRANSACTION[32 : 63] != <uint256_t> 0 &&  TRANSACTION[ : TRANSACTION.length - 1] == blockchain.ledger[TRANSACTION[0 : 31]["txs"]] && derivation.secp256k1(SIGNATURE) == derivation.secp256k1(TRANSACTION, TRANSACTION[0 : 31])) {
             
             unsigned short result = 1;
             
