@@ -12,6 +12,7 @@ namespace blockchain {
     
     struct Block {
         
+        uint256_t blockCreatorAddress;
         string blockId,
                blockHexUnixDate,
         uint142606336_t blockTransactions; // 16384 transactions per block with a maximum size of 1088 bytes ( 8704 bits ) per transaction
@@ -20,14 +21,28 @@ namespace blockchain {
     };
     
     string firstBlockHash = "",
-           lastBlockContent = "",
-           lastBlockHexUnixDate,
-           lastBlockSha512Hash = "",
            ledger = {};
     
-    unsigned int createBlock() {
+    unsigned int createBlock(Block.blockCreatorAddress creatorAddress, Block.blockMessage message) {
         
+        string transactions = [];
         
+        if (transaction.ledger.length > 16384) {
+            
+            for (unsigned long long i; i < 16384; i++) {
+                
+                transactions.append(transaction.ledger[i - 1]);
+                
+            };
+            transaction.ledger[0 : 16383].delete();
+            
+            Block BLOCK = Block(creatorAddress, ledger.length, Date.now(), transactions, message);
+            
+        } else {
+            
+            Block BLOCK = Block(creatorAddress, ledger.length, Date.now(), transaction.ledger, message);
+            
+        };
         
     };
     unsigned int getBlock(string blockId) {
@@ -42,7 +57,15 @@ namespace blockchain {
     };
     unsigned int verifyBlock(Block BLOCK, transaction.signature SIGNATURE) {
         
-        
+        if (BLOCK.size <= 17826848 && transaction.verifySignature(SIGNATURE, BLOCK[0 : 31]) == 1) {
+            
+            return 1;
+            
+        } else {
+            
+            return 0;
+            
+        };
         
     };
     unsigned int confirmBlock(Block BLOCK, wallet.privateKey PRIVATEKEY) {
