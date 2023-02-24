@@ -1,3 +1,5 @@
+#include <string>
+
 #include "../blockchain/blockchain.cpp"
 #include "../derivation/derivation.cpp"
 #include "../hashing/hashing.cpp"
@@ -11,14 +13,15 @@ namespace transaction {
         
         wallet.publicKey from,
                          to;
-        string transactionId,
-               transactionMessage;
+        uint8192_t transactionId,
+                   transactionDate,
+                   transactionMessage;
         
     };
     
-    unsigned int createTransaction(wallet.publicKey from, wallet.publicKey to, string message) {
+    unsigned int createTransaction(wallet.publicKey from, wallet.publicKey to, Transaction.transactionId id, Transaction.transactionDate date, Transaction.transactionMessage message) {
         
-        string TRANSACTION = Transaction(from, to, message);
+        string TRANSACTION = Transaction(from, to, id, date, message);
         
         return TRANSACTION;
         
@@ -33,7 +36,7 @@ namespace transaction {
     };
     unsigned int verifyTransaction(wallet.signature SIGNATURE, Transaction TRANSACTION) {
         
-        if (TRANSACTION.length <= 1088 && TRANSACTION[0 : 31] != <uint256_t> 0 && TRANSACTION[32 : 63] && TRANSACTION[1088 : TRANSACTION.length - 1] == blockchain.ledger[TRANSACTION[0 : 31]["txs"]] && derivation.secp256k1(SIGNATURE) == derivation.secp256k1(TRANSACTION, TRANSACTION[0 : 31])) {
+        if (TRANSACTION.length <= 1088 && TRANSACTION[0 : 31] != <uint256_t> 0 && TRANSACTION[32 : 63] != <uint256_t> 0 &&  TRANSACTION[1088 : TRANSACTION.length - 1] == blockchain.ledger[TRANSACTION[0 : 31]["txs"]] && derivation.secp256k1(SIGNATURE) == derivation.secp256k1(TRANSACTION, TRANSACTION[0 : 31])) {
             
             unsigned short result = 1;
             
