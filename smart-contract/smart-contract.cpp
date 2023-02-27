@@ -28,7 +28,7 @@ namespace smartcontract {
     
     string ledger = {};
     
-    unsigned int DEPLOY(string orders) {
+    unsigned int DEPLOY(string orders, string fee) {
         
         
         
@@ -41,7 +41,7 @@ namespace smartcontract {
             
             if (orders[i[0]] == "01100010" || orders[i[0]] == "01000010") { // if the first character of the order is a b or B then it's a binary order
                 
-                if (orders[i[1]] == "") {
+                if (orders[i[1]] == 0) { // invert
                     
                     
                     
@@ -49,35 +49,89 @@ namespace smartcontract {
                 
             } else if (orders[i[0]] == "01101001" || orders[i[0]] == "01001001") { // if the first character of the order is an i or an I then it's a text order
                 
-                if (orders[i[1]] == "INV") {
+                if ((orders[i[1]] == "inv" || orders[i[1]] == "INV") {
                     
                     
                     
-                } else if (orders[i[1]] == "AND") {
+                };
+                if (orders[i[1]] == "and" || orders[i[1]] == "AND") {
                     
                     
                     
-                } else if (orders[i[1]] == "OR") {
+                };
+                if (orders[i[1]] == "or" || orders[i[1]] == "OR") {
                     
                     
                     
-                } else if (orders[i[1]] == "XOR") {
+                };
+                if (orders[i[1]] == "xor" || orders[i[1]] "XOR") {
                     
                     
                     
-                } else if (orders[i[1]] == "NOT") {
+                };
+                if (orders[i[1]] == "not" || orders[i[1]] == "NOT") {
                     
                     
                     
-                } else if (orders[i[1]] == "NAND") {
+                };
+                if (orders[i[1]] == "nand" || orders[i[1]] == "NAND") {
                     
                     
                     
-                } else if (orders[i[1]] == "NOR") {
+                };
+                if (orders[i[1]] == "nor" || orders[i[1]] == "NOR") {
                     
                     
                     
-                } else if (orders[i[1]] == "XNOR") {
+                };
+                if (orders[i[1]] == "xnor" || orders[i[1]] == "XNOR") {
+                    
+                    
+                    
+                };
+                
+                if (orders[i[1]] == "add" || orders[i[1]] == "ADD") {
+                    
+                    
+                    
+                };
+                if (orders[i[1]] == "min" || orders[i[1]] == "MIN") {
+                    
+                    
+                    
+                };
+                if (orders[i[1]] == "mul" || orders[i[1]] == "MUL") {
+                    
+                    
+                    
+                };
+                if (orders[i[1]] == "sub" || orders[i[1]] == "SUB") {
+                    
+                    
+                    
+                };
+                if (orders[i[1]] == "sqr" || orders[i[1]] == "SQR") {
+                    
+                    
+                    
+                };
+                if (orders[i[1]] == "srr" || orders[i[1]] == "SRR") {
+                    
+                    
+                    
+                };
+                
+                if (orders[i[1]] == "cpy" || orders[i[1]] == "CPY") {
+                    
+                    
+                    
+                };
+                if (orders[i[1]] == "get" || orders[i[1]] == "GET") {
+                    
+                    
+                    
+                };
+                if (orders[i[1]] == "rem" || orders[i[1]] == "REM") {
                     
                     
                     
