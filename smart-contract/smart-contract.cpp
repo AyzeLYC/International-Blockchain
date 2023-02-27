@@ -41,7 +41,89 @@ namespace smartcontract {
             
             if (orders[i[0]] == "01100010" || orders[i[0]] == "01000010") { // if the first character of the order is a b or B then it's a binary order
                 
-                if (orders[i[1]] == 0) { // invert
+                if (orders[i[1]] == 0x00000000) { // invert
+                    
+                    
+                    
+                };
+                if (orders[i[1]] == 0x00000001) { // and
+                    
+                    
+                    
+                };
+                if (orders[i[1]] == 0x00000010) { // or
+                    
+                    
+                    
+                };
+                if (orders[i[1]] == 0x00000011) { // xor
+                    
+                    
+                    
+                };
+                if (orders[i[1]] == 0x00000100) { // not
+                    
+                    
+                    
+                };
+                if (orders[i[1]] == 0x00000101) { // not and
+                    
+                    
+                    
+                };
+                if (orders[i[1]] == 0x00000110) { // not or
+                    
+                    
+                    
+                };
+                if (orders[i[1]] == 0x00000111) { // xnot or
+                    
+                    
+                    
+                };
+                
+                if (orders[i[1]] == 0x00001000) { // plus
+                    
+                    
+                    
+                };
+                if (orders[i[1]] == 0x00001001) { // minus
+                    
+                    
+                    
+                };
+                if (orders[i[1]] == 0x00001010) { // multiply
+                    
+                    
+                    
+                };
+                if (orders[i[1]] == 0x00001011) { // divide
+                    
+                    
+                    
+                };
+                if (orders[i[1]] == 0x00001100) { // square
+                    
+                    
+                    
+                };
+                if (orders[i[1]] == 0x00001101) { // square root
+                    
+                    
+                    
+                };
+                
+                if (orders[i[1]] == 0x00001110) { // copy
+                    
+                    
+                    
+                };
+                if (orders[i[1]] == 0x00001111) { // get
+                    
+                    
+                    
+                };
+                if (orders[i[1]] == 0x00010000) { // remove
                     
                     
                     
