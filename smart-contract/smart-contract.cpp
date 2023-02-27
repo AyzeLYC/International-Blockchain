@@ -3,7 +3,7 @@ namespace smartcontract {
     \*
      * Instructions / Instruction Binary Code : Calculation
      * 
-     * INV/00000000 byte : Logic gate Invert the byte bits ( 00001111 => 11110000 etc )
+     * INV/00000000 byte : Logic gate INVERT each bit of the bytes
      * AND/00000001 byte1 byte2 : Logic gate OR between each bit of both bytes
      * OR/00000010 byte1 byte2 : Logic gate AND between each bit of both bytes
      * XOR/00000011 byte1 byte2 : Logic gate XOR between each bit of both bytes
