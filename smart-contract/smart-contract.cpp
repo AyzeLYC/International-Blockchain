@@ -5,12 +5,12 @@ namespace smartcontract {
      * 
      * INV/00000000 byte : Logic gate Invert the byte bits ( 00001111 => 11110000 etc )
      * AND/00000001 byte1 byte2 : Logic gate OR between each bit of both bytes
-     * OR0/00000010 byte1 byte2 : Logic gate AND between each bit of both bytes
+     * OR/00000010 byte1 byte2 : Logic gate AND between each bit of both bytes
      * XOR/00000011 byte1 byte2 : Logic gate XOR between each bit of both bytes
      * NOT/00000100 byte1 byte2 : Logic gate NOT between each bit of both bytes
-     * NND/00000101 byte1 byte2 : Logic gate NAND between each bit of both bytes
+     * NAND/00000101 byte1 byte2 : Logic gate NAND between each bit of both bytes
      * NOR/00000110 byte1 byte2 : Logic gate NOR between each bit of both bytes
-     * XNR/00000111 byte1 byte2 : Logic gate XNOR between each bit of both bytes
+     * XNOR/00000111 byte1 byte2 : Logic gate XNOR between each bit of both bytes
      *
      * ADD/00001000 byte1 byte2 : Add the bit 2 to the bit 1 of each byte together
      * MIN/00001001 byte1 byte2 : Remove the bit 2 to the bit 1 of each byte together
@@ -33,7 +33,57 @@ namespace smartcontract {
     };
     unsigned int RUN(string orders) {
         
+        string resuts = [];
         
+        for (unsigned long long i; i < orders.length; i++) {
+            
+            if (orders[i[0]] == "01100010" || orders[i[0]] == "01000010") { // if the first character of the order is a b or B then it's a binary order
+                
+                if (orders[i[1]] == "") {
+                    
+                    
+                    
+                };
+                
+            } else if (orders[i[0]] == "01101001" || orders[i[0]] == "01001001") { // if the first character of the order is an i or an I then it's a text order
+                
+                if (orders[i[1]] == "INV") {
+                    
+                    
+                    
+                } else if (orders[i[1]] == "AND") {
+                    
+                    
+                    
+                } else if (orders[i[1]] == "OR") {
+                    
+                    
+                    
+                } else if (orders[i[1]] == "XOR") {
+                    
+                    
+                    
+                } else if (orders[i[1]] == "NOT") {
+                    
+                    
+                    
+                } else if (orders[i[1]] == "NAND") {
+                    
+                    
+                    
+                } else if (orders[i[1]] == "NOR") {
+                    
+                    
+                    
+                } else if (orders[i[1]] == "XNOR") {
+                    
+                    
+                    
+                };
+                
+            };
+            
+        };
         
     };
     
