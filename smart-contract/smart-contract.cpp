@@ -215,10 +215,14 @@ namespace smartcontract {
                 };
                 if (orders[i[1]] == "rem" || orders[i[1]] == "REM") {
                     
-                    if (ledger.find(orders[i[2]]) != string.npos) {
+                    if (ledger.contains(orders[i[2]])) {
                         
                         ledger.erase(remove(ledger.begin(), ledger.end(), orders[i[2]]));
-                        return true;
+                        results.append(true)
+                        
+                    } else {
+                        
+                        results.append(false);
                         
                     };
                     
