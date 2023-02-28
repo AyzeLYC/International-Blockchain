@@ -125,7 +125,16 @@ namespace smartcontract {
                 };
                 if (orders[i[1]] == 0x00010000) { // remove
                     
-                    
+                    if (ledger.contains(orders[i[2]])) {
+                        
+                        ledger.erase(remove(ledger.begin(), ledger.end(), orders[i[2]]));
+                        results.append(true)
+                        
+                    } else {
+                        
+                        results.append(false);
+                        
+                    };
                     
                 };
                 
