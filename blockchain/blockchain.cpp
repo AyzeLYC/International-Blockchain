@@ -83,10 +83,36 @@ namespace blockchain {
 
 namespace Bitcoin {
     
-    #include "../hashing/hashing.cpp"
-    
     string blocksLedger = [],
-           transactionsLedger = [];
+           hashsLedger = [],
+           privateKeys = {}, // format : "privatekey": [{"pubkey": "public key 1", "derivation": "derivation datas"}, {"pubkey": "public key 2", "derivation": "derivation datas"} ... ]
+           transactionsPool = [];
+    
+    unsigned int generatePrivateKey() {
+        
+        
+        
+    };
+    unsigned int generatePublicKey() {
+        
+        
+        
+    };
+    unsigned int createWalletFile() {
+        
+        
+        
+    };
+    unsigned int lockWalletFile() {
+        
+        
+        
+    };
+    unsigned int unlockWalletFile() {
+        
+        
+        
+    };
     
     unsigned int createTransaction() {
         
@@ -114,24 +140,23 @@ namespace Bitcoin {
         
         
     };
-    unsigned int verifyBlock() {
+    unsigned int verifyBlock(string blockData, string hash) {
         
-        
+        if (hash.length() == 32 && hashing.sha256d(blockData).toString() == hash && blockData[4 : 35] == hashing.sha256d(blocksLedger[blocksLedger.length - 1])) {
+            
+            blocksLedger.append(blockData);
+            hashsLedger.append(hash);
+            return true;
+            
+        } else {
+            
+            return false;
+            
+        };
         
     };
     
-    unsigned int generatePrivateKey() {
-        
-        
-        
-    };
-    unsigned int generatePublicKey() {
-        
-        
-        
-    };
-    
-    unsigned int relay() {
+    unsigned int relay(string datas) {
         
         
         
