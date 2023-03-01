@@ -183,27 +183,74 @@ namespace smartcontract {
                 
                 if (orders[i[1]] == "add" || orders[i[1]] == "ADD") {
                     
+                    uint9_t results = [];
+                    unsigned long long k = 0;
                     
+                    while (k < orders[i[2]].length()) {
+                        
+                        results.append(orders[i[2[k]]] + orders[i[3[k]]]);
+                        k++;
+                        
+                    }
+                    return results;
                     
                 };
                 if (orders[i[1]] == "min" || orders[i[1]] == "MIN") {
                     
+                    unsigned short results = [];
+                    unsigned long long k = 0;
                     
+                    while (k < orders[i[2]].length()) {
+                        
+                        results.append(orders[i[2[k]]] - orders[i[3[k]]]);
+                        k++;
+                        
+                    }
+                    return results;
                     
                 };
                 if (orders[i[1]] == "mul" || orders[i[1]] == "MUL") {
                     
+                    uint8192_t results = [];
+                    unsigned long long k = 0;
                     
+                    while (k < orders[i[2].length()]) {
+                        
+                        results.append(orders[i[2[k]]] * orders[i[3[k]]]);
+                        k++;
+                        
+                    }
+                    return results;
                     
                 };
-                if (orders[i[1]] == "sub" || orders[i[1]] == "SUB") {
+                if (orders[i[1]] == "div" || orders[i[1]] == "DIV") {
                     
+                    unsigned short results = [];
+                    unsigned long long k = 0;
                     
+                    while (k < orders[i[2]].length()) {
+                        
+                        results.append(orders[i[2[k]]] / orders[i[3[k]]]);
+                        k++;
+                        
+                    }
+                    
+                    return results;
                     
                 };
                 if (orders[i[1]] == "sqr" || orders[i[1]] == "SQR") {
                     
+                    uint8192_t results = [];
+                    unsigned long long k = 0;
                     
+                    while(k < orders[i[2]].length()) {
+                        
+                        results.append(orders[i[2[k]]] * orders[i[2[k]]]);
+                        k++
+                        
+                    }
+                    
+                    return results;
                     
                 };
                 if (orders[i[1]] == "srr" || orders[i[1]] == "SRR") {
