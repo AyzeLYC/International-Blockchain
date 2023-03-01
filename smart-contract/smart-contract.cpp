@@ -1,4 +1,5 @@
 #include <string>
+#include "../internet/internet.cpp"
 
 namespace smartcontract {
     
@@ -21,7 +22,7 @@ namespace smartcontract {
      * SQR/00001100 byte1 : Multiply the byte by itself
      * SRR/00001101 byte1 : Calculate the square root of the byte
      *
-     * CPY/00001110 address : Copy into the processing
+     * CPY/00001110 address : Copy into the processing memory
      * GET/00001111 url : Get some datas from an URL
      * REM/00010000 addressString : Delete some datas from a datas ledger
     *\
@@ -261,7 +262,16 @@ namespace smartcontract {
                 
                 if (orders[i[1]] == "cpy" || orders[i[1]] == "CPY") {
                     
-                    
+                    if (blockchain.contains(orders[i[2]]) {
+                        
+                        ledger.append("'" +orders[i[2]] +"': {" +blockchain[orders[i[2]]] +"}");
+                        return true;
+                        
+                    } else {
+                        
+                        return false;
+                        
+                    };
                     
                 };
                 if (orders[i[1]] == "get" || orders[i[1]] == "GET") {
@@ -274,7 +284,7 @@ namespace smartcontract {
                     if (ledger.contains(orders[i[2]])) {
                         
                         ledger.erase(remove(ledger.begin(), ledger.end(), orders[i[2]]));
-                        results.append(true)
+                        results.append(true);
                         
                     } else {
                         
