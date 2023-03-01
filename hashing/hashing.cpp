@@ -1,5 +1,5 @@
 #include <string>
-#include "sha256/sha256.h"
+#include "sha256/sha256.cpp"
 
 namespace hashing {
     
