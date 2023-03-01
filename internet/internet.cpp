@@ -18,10 +18,10 @@ namespace internet {
     listen(torSocket, 256);
     listen(pingSocket, 64);
     
-    unsigned int blockchainSocketConnection = accept(blockchainSocket, {"AF_INET", 10000, "127.0.0.1"}, sizeof({"AF_INET", 10000, "127.0.0.1"}));
-    unsigned int httpSocketConnection = accept(httpSocket, {"AF_INET", 10000, "127.0.0.1"}, sizeof({"AF_INET", 10000, "127.0.0.1"}));
-    unsigned int torSocketConnection = accept(torSocket, {"AF_INET", 10000, "127.0.0.1"}, sizeof({"AF_INET", 10000, "127.0.0.1"}));
-    unsigned int pingSocketConnection = accept(pingSocket, {"AF_INET", 10000, "127.0.0.1"}, sizeof({"AF_INET", 10000, "127.0.0.1"}));
+    unsigned int blockchainSocketConnection = accept(blockchainSocket, {"AF_INET", 10000, "127.0.0.1"}, sizeof({"AF_INET", 10000, "127.0.0.1"})),
+                 httpSocketConnection = accept(httpSocket, {"AF_INET", 10000, "127.0.0.1"}, sizeof({"AF_INET", 10000, "127.0.0.1"})),
+                 torSocketConnection = accept(torSocket, {"AF_INET", 10000, "127.0.0.1"}, sizeof({"AF_INET", 10000, "127.0.0.1"})),
+                 pingSocketConnection = accept(pingSocket, {"AF_INET", 10000, "127.0.0.1"}, sizeof({"AF_INET", 10000, "127.0.0.1"}));
     
     string blockchainSocketBuffer = [],
            httpSocketBuffer = [],
