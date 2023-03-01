@@ -1,6 +1,7 @@
 #ifndef SHA256_H
 #define SHA256_H
 
+#include <std>
 #include <string>
  
 class SHA256
