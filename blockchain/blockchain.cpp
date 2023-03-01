@@ -80,3 +80,61 @@ namespace blockchain {
     };
     
 }
+
+namespace Bitcoin {
+    
+    #include "../hashing/hashing.cpp"
+    
+    string blocksLedger = [],
+           transactionsLedger = [];
+    
+    unsigned int createTransaction() {
+        
+        
+        
+    };
+    unsigned int signTransaction() {
+        
+        
+        
+    };
+    unsigned int verifyTransaction() {
+        
+        
+        
+    };
+    
+    unsigned int createBlock() {
+        
+        
+        
+    };
+    unsigned int mineBlock() {
+        
+        
+        
+    };
+    unsigned int verifyBlock() {
+        
+        
+        
+    };
+    
+    unsigned int generatePrivateKey() {
+        
+        
+        
+    };
+    unsigned int generatePublicKey() {
+        
+        
+        
+    };
+    
+    unsigned int relay() {
+        
+        
+        
+    };
+    
+}
