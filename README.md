@@ -2,8 +2,6 @@
 
 A public blockchain created by the peoples for the peoples.
 
-The blockchain was created to make everyone use a free fee transactions blockchain and permit each person on earth to use their money in what they want, and where they want
+This blockchain was created due to the need of a non opaque internation blockchain made for national housing markets, national decisions, CBDCs and crime warrants.
 
-The goal is to obligate the Central Banks to deploy their CBDC in this Blockchain to permit everyone to see how much money is there in circulation, how much money the are printing and upgrade monetary transparency.
-
-If we don't impose anything to the governments and central banks, then peoples will only be some system slaves.
+If the populations don't impose on their government and central bank to use this blockchain, peoples will be reduced as system slaves.
