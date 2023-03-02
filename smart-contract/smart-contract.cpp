@@ -27,7 +27,8 @@ namespace smartcontract {
      * REM/00010000 addressString : Delete some datas from a datas ledger
     *\
     
-    string ledger = {};
+    string ledger = {},
+           results = [];
     
     unsigned int DEPLOY(string orders, string fee) {
         
@@ -184,74 +185,74 @@ namespace smartcontract {
                 
                 if (orders[i[1]] == "add" || orders[i[1]] == "ADD") {
                     
-                    uint9_t results = [];
+                    uint9_t result = [];
                     unsigned long long k = 0;
                     
                     while (k < orders[i[2]].length()) {
                         
-                        results.append(orders[i[2[k]]] + orders[i[3[k]]]);
+                        result.append(orders[i[2[k]]] + orders[i[3[k]]]);
                         k++;
                         
                     }
-                    return results;
+                    results.append(result);
                     
                 };
                 if (orders[i[1]] == "min" || orders[i[1]] == "MIN") {
                     
-                    unsigned short results = [];
+                    unsigned short result = [];
                     unsigned long long k = 0;
                     
                     while (k < orders[i[2]].length()) {
                         
-                        results.append(orders[i[2[k]]] - orders[i[3[k]]]);
+                        result.append(orders[i[2[k]]] - orders[i[3[k]]]);
                         k++;
                         
                     }
-                    return results;
+                    results.append(result);
                     
                 };
                 if (orders[i[1]] == "mul" || orders[i[1]] == "MUL") {
                     
-                    uint8192_t results = [];
+                    uint8192_t result = [];
                     unsigned long long k = 0;
                     
                     while (k < orders[i[2].length()]) {
                         
-                        results.append(orders[i[2[k]]] * orders[i[3[k]]]);
+                        result.append(orders[i[2[k]]] * orders[i[3[k]]]);
                         k++;
                         
                     }
-                    return results;
+                    results.append(result);
                     
                 };
                 if (orders[i[1]] == "div" || orders[i[1]] == "DIV") {
                     
-                    unsigned short results = [];
+                    unsigned short result = [];
                     unsigned long long k = 0;
                     
                     while (k < orders[i[2]].length()) {
                         
-                        results.append(orders[i[2[k]]] / orders[i[3[k]]]);
+                        result.append(orders[i[2[k]]] / orders[i[3[k]]]);
                         k++;
                         
                     }
                     
-                    return results;
+                    result.append(result);
                     
                 };
                 if (orders[i[1]] == "sqr" || orders[i[1]] == "SQR") {
                     
-                    uint8192_t results = [];
+                    uint8192_t result = [];
                     unsigned long long k = 0;
                     
                     while(k < orders[i[2]].length()) {
                         
-                        results.append(orders[i[2[k]]] * orders[i[2[k]]]);
+                        result.append(orders[i[2[k]]] * orders[i[2[k]]]);
                         k++
                         
                     }
                     
-                    return results;
+                    result.append(result);
                     
                 };
                 if (orders[i[1]] == "srr" || orders[i[1]] == "SRR") {
@@ -265,18 +266,19 @@ namespace smartcontract {
                     if (blockchain.contains(orders[i[2]]) {
                         
                         ledger.append("'" +orders[i[2]] +"': {" +blockchain[orders[i[2]]] +"}");
-                        return true;
+                        results.append(true);
                         
                     } else {
                         
-                        return false;
+                        results.append(false);
                         
                     };
                     
                 };
                 if (orders[i[1]] == "get" || orders[i[1]] == "GET") {
                     
-                    
+                    internet.tcpSocket.send(orders[i[2]], orders[i[3]]);
+                    results.append(internet.tcpSocket.receive());
                     
                 };
                 if (orders[i[1]] == "rem" || orders[i[1]] == "REM") {
