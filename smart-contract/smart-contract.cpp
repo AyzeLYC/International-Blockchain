@@ -45,7 +45,17 @@ namespace smartcontract {
                 
                 if (orders[i[1]] == 0x00000000) { // invert
                     
+                    unsigned long long k = 0;
+                    unsigned long int result = [];
                     
+                    while (k < orders[i[2]].length()) {
+                        
+                        result.append(18446744073709551615 - orders[i[2]]);
+                        k++;
+                        
+                    }
+                    
+                    results.append(result);
                     
                 };
                 if (orders[i[1]] == 0x00000001) { // and
@@ -86,8 +96,8 @@ namespace smartcontract {
                 
                 if (orders[i[1]] == 0x00001000) { // plus
                     
-                    uint10_t result = [];
                     unsigned long long k = 0;
+                    uint10_t result = [];
                     
                     while (k < orders[i[2]].length()) {
                         
@@ -101,8 +111,8 @@ namespace smartcontract {
                 };
                 if (orders[i[1]] == 0x00001001) { // minus
                     
-                    unsigned long int result = [];
                     unsigned long long k = 0;
+                    unsigned long int result = [];
                     
                     while (k < orders[i[2]].length()) {
                         
@@ -116,8 +126,8 @@ namespace smartcontract {
                 };
                 if (orders[i[1]] == 0x00001010) { // multiply
                     
-                    uint8192_t result = [];
                     unsigned long long k = 0;
+                    uint8192_t result = [];
                     
                     while (k < orders[i[2]].length()) {
                         
@@ -131,8 +141,8 @@ namespace smartcontract {
                 };
                 if (orders[i[1]] == 0x00001011) { // divide
                     
-                    uint8192_t result = [];
                     unsigned long long k = 0;
+                    uint8192_t result = [];
                     
                     while (k < orders[i[2]].length()) {
                         
@@ -146,8 +156,8 @@ namespace smartcontract {
                 };
                 if (orders[i[1]] == 0x00001100) { // square
                     
-                    uint8192_t result = [];
                     unsigned long long k = 0;
+                    uint8192_t result = [];
                     
                     while(k < orders[i[2]].length()) {
                         
@@ -194,7 +204,17 @@ namespace smartcontract {
                 
                 if ((orders[i[1]] == "inv" || orders[i[1]] == "INV") {
                     
+                    unsigned long long k = 0;
+                    unsigned long int result = [];
                     
+                    while (k < orders[i[2]].length()) {
+                        
+                        result.append(18446744073709551615 - orders[i[2]]);
+                        k++;
+                        
+                    }
+                    
+                    results.append(result);
                     
                 };
                 if (orders[i[1]] == "and" || orders[i[1]] == "AND") {
@@ -235,8 +255,8 @@ namespace smartcontract {
                 
                 if (orders[i[1]] == "add" || orders[i[1]] == "ADD") {
                     
-                    uint9_t result = [];
                     unsigned long long k = 0;
+                    uint9_t result = [];
                     
                     while (k < orders[i[2]].length()) {
                         
@@ -249,8 +269,8 @@ namespace smartcontract {
                 };
                 if (orders[i[1]] == "min" || orders[i[1]] == "MIN") {
                     
-                    unsigned short result = [];
                     unsigned long long k = 0;
+                    unsigned short result = [];
                     
                     while (k < orders[i[2]].length()) {
                         
@@ -263,8 +283,8 @@ namespace smartcontract {
                 };
                 if (orders[i[1]] == "mul" || orders[i[1]] == "MUL") {
                     
-                    uint8192_t result = [];
                     unsigned long long k = 0;
+                    uint8192_t result = [];
                     
                     while (k < orders[i[2].length()]) {
                         
@@ -277,8 +297,8 @@ namespace smartcontract {
                 };
                 if (orders[i[1]] == "div" || orders[i[1]] == "DIV") {
                     
+                    unsigned long long k = 0;
                     unsigned short result = [];
-                    unsigned long int k = 0;
                     
                     while (k < orders[i[2]].length()) {
                         
@@ -292,8 +312,8 @@ namespace smartcontract {
                 };
                 if (orders[i[1]] == "sqr" || orders[i[1]] == "SQR") {
                     
-                    uint8192_t result = [];
                     unsigned long long k = 0;
+                    uint8192_t result = [];
                     
                     while(k < orders[i[2]].length()) {
                         
