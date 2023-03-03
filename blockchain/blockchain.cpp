@@ -109,6 +109,33 @@ namespace Bitcoin {
         
     }
     
+    struct message {
+        
+        uint32_t magic;
+        uint96_t command;
+        uint32_t length,
+                 checksum;
+        string payload;
+        
+    }
+    
+    struct address {
+        
+        uint32_t time;
+        uint64_t services;
+        uint128_t ip;
+        uint16_t port;
+        
+    }
+    
+    struct inventoryVectors {
+        
+        uint32_t type;
+        uint256_t hash;
+        
+    }
+    
+    
     string blocksLedger = [],
            hashsLedger = [],
            privateKeys = {}, // format : "privatekey": [{"pubkey": "public key 1", "derivation": "derivation datas"}, {"pubkey": "public key 2", "derivation": "derivation datas"} ... ]
