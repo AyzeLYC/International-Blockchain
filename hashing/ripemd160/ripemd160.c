@@ -1,433 +1,316 @@
-//Switch to the appropriate trace level
- #define TRACE_LEVEL CRYPTO_TRACE_LEVEL
-  
- //Dependencies
- #include "core/crypto.h"
- #include "hash/ripemd160.h"
-  
- //Check crypto library configuration
- #if (RIPEMD160_SUPPORT == ENABLED)
-  
- //RIPEMD-160 auxiliary functions
- #define F(x, y, z) ((x) ^ (y) ^ (z))
- #define G(x, y, z) (((x) & (y)) | (~(x) & (z)))
- #define H(x, y, z) (((x) | ~(y)) ^ (z))
- #define I(x, y, z) (((x) & (z)) | ((y) & ~(z)))
- #define J(x, y, z) ((x) ^ ((y) | ~(z)))
-  
- #define FF(a, b, c, d, e, x, s) a += F(b, c, d) + (x), a = ROL32(a, s) + (e), c = ROL32(c, 10)
- #define GG(a, b, c, d, e, x, s) a += G(b, c, d) + (x) + 0x5A827999, a = ROL32(a, s) + (e), c = ROL32(c, 10)
- #define HH(a, b, c, d, e, x, s) a += H(b, c, d) + (x) + 0x6ED9EBA1, a = ROL32(a, s) + (e), c = ROL32(c, 10)
- #define II(a, b, c, d, e, x, s) a += I(b, c, d) + (x) + 0x8F1BBCDC, a = ROL32(a, s) + (e), c = ROL32(c, 10)
- #define JJ(a, b, c, d, e, x, s) a += J(b, c, d) + (x) + 0xA953FD4E, a = ROL32(a, s) + (e), c = ROL32(c, 10)
-  
- #define FFF(a, b, c, d, e, x, s) a += F(b, c, d) + (x), a = ROL32(a, s) + (e), c = ROL32(c, 10)
- #define GGG(a, b, c, d, e, x, s) a += G(b, c, d) + (x) + 0x7A6D76E9, a = ROL32(a, s) + (e), c = ROL32(c, 10)
- #define HHH(a, b, c, d, e, x, s) a += H(b, c, d) + (x) + 0x6D703EF3, a = ROL32(a, s) + (e), c = ROL32(c, 10)
- #define III(a, b, c, d, e, x, s) a += I(b, c, d) + (x) + 0x5C4DD124, a = ROL32(a, s) + (e), c = ROL32(c, 10)
- #define JJJ(a, b, c, d, e, x, s) a += J(b, c, d) + (x) + 0x50A28BE6, a = ROL32(a, s) + (e), c = ROL32(c, 10)
-  
- //RIPEMD-160 padding
- static const uint8_t padding[64] =
- {
-    0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
- };
-  
- //RIPEMD-160 object identifier (1.3.36.3.2.1)
- const uint8_t ripemd160Oid[5] = {0x2B, 0x24, 0x03, 0x02, 0x01};
-  
- //Common interface for hash algorithms
- const HashAlgo ripemd160HashAlgo =
- {
-    "RIPEMD-160",
-    ripemd160Oid,
-    sizeof(ripemd160Oid),
-    sizeof(Ripemd160Context),
-    RIPEMD160_BLOCK_SIZE,
-    RIPEMD160_DIGEST_SIZE,
-    RIPEMD160_MIN_PAD_SIZE,
-    FALSE,
-    (HashAlgoCompute) ripemd160Compute,
-    (HashAlgoInit) ripemd160Init,
-    (HashAlgoUpdate) ripemd160Update,
-    (HashAlgoFinal) ripemd160Final,
-    NULL
- };
-  
-  
- /**
-  * @brief Digest a message using RIPEMD-160
-  * @param[in] data Pointer to the message being hashed
-  * @param[in] length Length of the message
-  * @param[out] digest Pointer to the calculated digest
-  * @return Error code
-  **/
-  
- error_t ripemd160Compute(const void *data, size_t length, uint8_t *digest)
- {
-    error_t error;
-    Ripemd160Context *context;
-  
-    //Allocate a memory buffer to hold the RIPEMD-160 context
-    context = cryptoAllocMem(sizeof(Ripemd160Context));
-  
-    //Successful memory allocation?
-    if(context != NULL)
+#include <string.h>
+
+#include "ripemd160.h"
+#include "memzero.h"
+
+/*
+ * 32-bit integer manipulation macros (little endian)
+ */
+#ifndef GET_UINT32_LE
+#define GET_UINT32_LE(n,b,i)                            \
+{                                                       \
+    (n) = ( (uint32_t) (b)[(i)    ]       )             \
+        | ( (uint32_t) (b)[(i) + 1] <<  8 )             \
+        | ( (uint32_t) (b)[(i) + 2] << 16 )             \
+        | ( (uint32_t) (b)[(i) + 3] << 24 );            \
+}
+#endif
+
+#ifndef PUT_UINT32_LE
+#define PUT_UINT32_LE(n,b,i)                                    \
+{                                                               \
+    (b)[(i)    ] = (uint8_t) ( ( (n)       ) & 0xFF );    \
+    (b)[(i) + 1] = (uint8_t) ( ( (n) >>  8 ) & 0xFF );    \
+    (b)[(i) + 2] = (uint8_t) ( ( (n) >> 16 ) & 0xFF );    \
+    (b)[(i) + 3] = (uint8_t) ( ( (n) >> 24 ) & 0xFF );    \
+}
+#endif
+
+/*
+ * RIPEMD-160 context setup
+ */
+void ripemd160_Init(RIPEMD160_CTX *ctx)
+{
+    memzero(ctx, sizeof(RIPEMD160_CTX));
+    ctx->total[0] = 0;
+    ctx->total[1] = 0;
+    ctx->state[0] = 0x67452301;
+    ctx->state[1] = 0xEFCDAB89;
+    ctx->state[2] = 0x98BADCFE;
+    ctx->state[3] = 0x10325476;
+    ctx->state[4] = 0xC3D2E1F0;
+}
+
+#if !defined(MBEDTLS_RIPEMD160_PROCESS_ALT)
+/*
+ * Process one block
+ */
+void ripemd160_process( RIPEMD160_CTX *ctx, const uint8_t data[RIPEMD160_BLOCK_LENGTH] )
+{
+    uint32_t A, B, C, D, E, Ap, Bp, Cp, Dp, Ep, X[16];
+
+    GET_UINT32_LE( X[ 0], data,  0 );
+    GET_UINT32_LE( X[ 1], data,  4 );
+    GET_UINT32_LE( X[ 2], data,  8 );
+    GET_UINT32_LE( X[ 3], data, 12 );
+    GET_UINT32_LE( X[ 4], data, 16 );
+    GET_UINT32_LE( X[ 5], data, 20 );
+    GET_UINT32_LE( X[ 6], data, 24 );
+    GET_UINT32_LE( X[ 7], data, 28 );
+    GET_UINT32_LE( X[ 8], data, 32 );
+    GET_UINT32_LE( X[ 9], data, 36 );
+    GET_UINT32_LE( X[10], data, 40 );
+    GET_UINT32_LE( X[11], data, 44 );
+    GET_UINT32_LE( X[12], data, 48 );
+    GET_UINT32_LE( X[13], data, 52 );
+    GET_UINT32_LE( X[14], data, 56 );
+    GET_UINT32_LE( X[15], data, 60 );
+
+    A = Ap = ctx->state[0];
+    B = Bp = ctx->state[1];
+    C = Cp = ctx->state[2];
+    D = Dp = ctx->state[3];
+    E = Ep = ctx->state[4];
+
+#define F1( x, y, z )   ( x ^ y ^ z )
+#define F2( x, y, z )   ( ( x & y ) | ( ~x & z ) )
+#define F3( x, y, z )   ( ( x | ~y ) ^ z )
+#define F4( x, y, z )   ( ( x & z ) | ( y & ~z ) )
+#define F5( x, y, z )   ( x ^ ( y | ~z ) )
+
+#define S( x, n ) ( ( x << n ) | ( x >> (32 - n) ) )
+
+#define P( a, b, c, d, e, r, s, f, k )      \
+    a += f( b, c, d ) + X[r] + k;           \
+    a = S( a, s ) + e;                      \
+    c = S( c, 10 );
+
+#define P2( a, b, c, d, e, r, s, rp, sp )   \
+    P( a, b, c, d, e, r, s, F, K );         \
+    P( a ## p, b ## p, c ## p, d ## p, e ## p, rp, sp, Fp, Kp );
+
+#define F   F1
+#define K   0x00000000
+#define Fp  F5
+#define Kp  0x50A28BE6
+    P2( A, B, C, D, E,  0, 11,  5,  8 );
+    P2( E, A, B, C, D,  1, 14, 14,  9 );
+    P2( D, E, A, B, C,  2, 15,  7,  9 );
+    P2( C, D, E, A, B,  3, 12,  0, 11 );
+    P2( B, C, D, E, A,  4,  5,  9, 13 );
+    P2( A, B, C, D, E,  5,  8,  2, 15 );
+    P2( E, A, B, C, D,  6,  7, 11, 15 );
+    P2( D, E, A, B, C,  7,  9,  4,  5 );
+    P2( C, D, E, A, B,  8, 11, 13,  7 );
+    P2( B, C, D, E, A,  9, 13,  6,  7 );
+    P2( A, B, C, D, E, 10, 14, 15,  8 );
+    P2( E, A, B, C, D, 11, 15,  8, 11 );
+    P2( D, E, A, B, C, 12,  6,  1, 14 );
+    P2( C, D, E, A, B, 13,  7, 10, 14 );
+    P2( B, C, D, E, A, 14,  9,  3, 12 );
+    P2( A, B, C, D, E, 15,  8, 12,  6 );
+#undef F
+#undef K
+#undef Fp
+#undef Kp
+
+#define F   F2
+#define K   0x5A827999
+#define Fp  F4
+#define Kp  0x5C4DD124
+    P2( E, A, B, C, D,  7,  7,  6,  9 );
+    P2( D, E, A, B, C,  4,  6, 11, 13 );
+    P2( C, D, E, A, B, 13,  8,  3, 15 );
+    P2( B, C, D, E, A,  1, 13,  7,  7 );
+    P2( A, B, C, D, E, 10, 11,  0, 12 );
+    P2( E, A, B, C, D,  6,  9, 13,  8 );
+    P2( D, E, A, B, C, 15,  7,  5,  9 );
+    P2( C, D, E, A, B,  3, 15, 10, 11 );
+    P2( B, C, D, E, A, 12,  7, 14,  7 );
+    P2( A, B, C, D, E,  0, 12, 15,  7 );
+    P2( E, A, B, C, D,  9, 15,  8, 12 );
+    P2( D, E, A, B, C,  5,  9, 12,  7 );
+    P2( C, D, E, A, B,  2, 11,  4,  6 );
+    P2( B, C, D, E, A, 14,  7,  9, 15 );
+    P2( A, B, C, D, E, 11, 13,  1, 13 );
+    P2( E, A, B, C, D,  8, 12,  2, 11 );
+#undef F
+#undef K
+#undef Fp
+#undef Kp
+
+#define F   F3
+#define K   0x6ED9EBA1
+#define Fp  F3
+#define Kp  0x6D703EF3
+    P2( D, E, A, B, C,  3, 11, 15,  9 );
+    P2( C, D, E, A, B, 10, 13,  5,  7 );
+    P2( B, C, D, E, A, 14,  6,  1, 15 );
+    P2( A, B, C, D, E,  4,  7,  3, 11 );
+    P2( E, A, B, C, D,  9, 14,  7,  8 );
+    P2( D, E, A, B, C, 15,  9, 14,  6 );
+    P2( C, D, E, A, B,  8, 13,  6,  6 );
+    P2( B, C, D, E, A,  1, 15,  9, 14 );
+    P2( A, B, C, D, E,  2, 14, 11, 12 );
+    P2( E, A, B, C, D,  7,  8,  8, 13 );
+    P2( D, E, A, B, C,  0, 13, 12,  5 );
+    P2( C, D, E, A, B,  6,  6,  2, 14 );
+    P2( B, C, D, E, A, 13,  5, 10, 13 );
+    P2( A, B, C, D, E, 11, 12,  0, 13 );
+    P2( E, A, B, C, D,  5,  7,  4,  7 );
+    P2( D, E, A, B, C, 12,  5, 13,  5 );
+#undef F
+#undef K
+#undef Fp
+#undef Kp
+
+#define F   F4
+#define K   0x8F1BBCDC
+#define Fp  F2
+#define Kp  0x7A6D76E9
+    P2( C, D, E, A, B,  1, 11,  8, 15 );
+    P2( B, C, D, E, A,  9, 12,  6,  5 );
+    P2( A, B, C, D, E, 11, 14,  4,  8 );
+    P2( E, A, B, C, D, 10, 15,  1, 11 );
+    P2( D, E, A, B, C,  0, 14,  3, 14 );
+    P2( C, D, E, A, B,  8, 15, 11, 14 );
+    P2( B, C, D, E, A, 12,  9, 15,  6 );
+    P2( A, B, C, D, E,  4,  8,  0, 14 );
+    P2( E, A, B, C, D, 13,  9,  5,  6 );
+    P2( D, E, A, B, C,  3, 14, 12,  9 );
+    P2( C, D, E, A, B,  7,  5,  2, 12 );
+    P2( B, C, D, E, A, 15,  6, 13,  9 );
+    P2( A, B, C, D, E, 14,  8,  9, 12 );
+    P2( E, A, B, C, D,  5,  6,  7,  5 );
+    P2( D, E, A, B, C,  6,  5, 10, 15 );
+    P2( C, D, E, A, B,  2, 12, 14,  8 );
+#undef F
+#undef K
+#undef Fp
+#undef Kp
+
+#define F   F5
+#define K   0xA953FD4E
+#define Fp  F1
+#define Kp  0x00000000
+    P2( B, C, D, E, A,  4,  9, 12,  8 );
+    P2( A, B, C, D, E,  0, 15, 15,  5 );
+    P2( E, A, B, C, D,  5,  5, 10, 12 );
+    P2( D, E, A, B, C,  9, 11,  4,  9 );
+    P2( C, D, E, A, B,  7,  6,  1, 12 );
+    P2( B, C, D, E, A, 12,  8,  5,  5 );
+    P2( A, B, C, D, E,  2, 13,  8, 14 );
+    P2( E, A, B, C, D, 10, 12,  7,  6 );
+    P2( D, E, A, B, C, 14,  5,  6,  8 );
+    P2( C, D, E, A, B,  1, 12,  2, 13 );
+    P2( B, C, D, E, A,  3, 13, 13,  6 );
+    P2( A, B, C, D, E,  8, 14, 14,  5 );
+    P2( E, A, B, C, D, 11, 11,  0, 15 );
+    P2( D, E, A, B, C,  6,  8,  3, 13 );
+    P2( C, D, E, A, B, 15,  5,  9, 11 );
+    P2( B, C, D, E, A, 13,  6, 11, 11 );
+#undef F
+#undef K
+#undef Fp
+#undef Kp
+
+    C             = ctx->state[1] + C + Dp;
+    ctx->state[1] = ctx->state[2] + D + Ep;
+    ctx->state[2] = ctx->state[3] + E + Ap;
+    ctx->state[3] = ctx->state[4] + A + Bp;
+    ctx->state[4] = ctx->state[0] + B + Cp;
+    ctx->state[0] = C;
+}
+#endif /* !MBEDTLS_RIPEMD160_PROCESS_ALT */
+
+/*
+ * RIPEMD-160 process buffer
+ */
+void ripemd160_Update( RIPEMD160_CTX *ctx, const uint8_t *input, uint32_t ilen )
+{
+    uint32_t fill;
+    uint32_t left;
+
+    if( ilen == 0 )
+        return;
+
+    left = ctx->total[0] & 0x3F;
+    fill = RIPEMD160_BLOCK_LENGTH - left;
+
+    ctx->total[0] += (uint32_t) ilen;
+    ctx->total[0] &= 0xFFFFFFFF;
+
+    if( ctx->total[0] < (uint32_t) ilen )
+        ctx->total[1]++;
+
+    if( left && ilen >= fill )
     {
-       //Initialize the RIPEMD-160 context
-       ripemd160Init(context);
-       //Digest the message
-       ripemd160Update(context, data, length);
-       //Finalize the RIPEMD-160 message digest
-       ripemd160Final(context, digest);
-  
-       //Free previously allocated memory
-       cryptoFreeMem(context);
-  
-       //Successful processing
-       error = NO_ERROR;
+        memcpy( (void *) (ctx->buffer + left), input, fill );
+        ripemd160_process( ctx, ctx->buffer );
+        input += fill;
+        ilen  -= fill;
+        left = 0;
     }
-    else
+
+    while( ilen >= RIPEMD160_BLOCK_LENGTH )
     {
-       //Failed to allocate memory
-       error = ERROR_OUT_OF_MEMORY;
+        ripemd160_process( ctx, input );
+        input += RIPEMD160_BLOCK_LENGTH;
+        ilen  -= RIPEMD160_BLOCK_LENGTH;
     }
-  
-    //Return status code
-    return error;
- }
-  
-  
- /**
-  * @brief Initialize RIPEMD-160 message digest context
-  * @param[in] context Pointer to the RIPEMD-160 context to initialize
-  **/
-  
- void ripemd160Init(Ripemd160Context *context)
- {
-    //Set initial hash value
-    context->h[0] = 0x67452301;
-    context->h[1] = 0xEFCDAB89;
-    context->h[2] = 0x98BADCFE;
-    context->h[3] = 0x10325476;
-    context->h[4] = 0xC3D2E1F0;
-  
-    //Number of bytes in the buffer
-    context->size = 0;
-    //Total length of the message
-    context->totalSize = 0;
- }
-  
-  
- /**
-  * @brief Update the RIPEMD-160 context with a portion of the message being hashed
-  * @param[in] context Pointer to the RIPEMD-160 context
-  * @param[in] data Pointer to the buffer being hashed
-  * @param[in] length Length of the buffer
-  **/
-  
- void ripemd160Update(Ripemd160Context *context, const void *data, size_t length)
- {
-    size_t n;
-  
-    //Process the incoming data
-    while(length > 0)
+
+    if( ilen > 0 )
     {
-       //The buffer can hold at most 64 bytes
-       n = MIN(length, 64 - context->size);
-  
-       //Copy the data to the buffer
-       osMemcpy(context->buffer + context->size, data, n);
-  
-       //Update the RIPEMD-160 context
-       context->size += n;
-       context->totalSize += n;
-       //Advance the data pointer
-       data = (uint8_t *) data + n;
-       //Remaining bytes to process
-       length -= n;
-  
-       //Process message in 16-word blocks
-       if(context->size == 64)
-       {
-          //Transform the 16-word block
-          ripemd160ProcessBlock(context);
-          //Empty the buffer
-          context->size = 0;
-       }
+        memcpy( (void *) (ctx->buffer + left), input, ilen );
     }
- }
-  
-  
- /**
-  * @brief Finish the RIPEMD-160 message digest
-  * @param[in] context Pointer to the RIPEMD-160 context
-  * @param[out] digest Calculated digest (optional parameter)
-  **/
-  
- void ripemd160Final(Ripemd160Context *context, uint8_t *digest)
- {
-    uint_t i;
-    size_t paddingSize;
-    uint64_t totalSize;
-  
-    //Length of the original message (before padding)
-    totalSize = context->totalSize * 8;
-  
-    //Pad the message so that its length is congruent to 56 modulo 64
-    if(context->size < 56)
-    {
-       paddingSize = 56 - context->size;
-    }
-    else
-    {
-       paddingSize = 64 + 56 - context->size;
-    }
-  
-    //Append padding
-    ripemd160Update(context, padding, paddingSize);
-  
-    //Append the length of the original message
-    context->x[14] = htole32((uint32_t) totalSize);
-    context->x[15] = htole32((uint32_t) (totalSize >> 32));
-  
-    //Calculate the message digest
-    ripemd160ProcessBlock(context);
-  
-    //Convert from host byte order to little-endian byte order
-    for(i = 0; i < 5; i++)
-    {
-       context->h[i] = htole32(context->h[i]);
-    }
-  
-    //Copy the resulting digest
-    if(digest != NULL)
-    {
-       osMemcpy(digest, context->digest, RIPEMD160_DIGEST_SIZE);
-    }
- }
-  
-  
- /**
-  * @brief Process message in 16-word blocks
-  * @param[in] context Pointer to the RIPEMD-160 context
-  **/
-  
- void ripemd160ProcessBlock(Ripemd160Context *context)
- {
-    uint_t i;
-  
-    //Initialize the working registers
-    uint32_t aa= context->h[0];
-    uint32_t bb = context->h[1];
-    uint32_t cc = context->h[2];
-    uint32_t dd = context->h[3];
-    uint32_t ee = context->h[4];
-    uint32_t aaa = context->h[0];
-    uint32_t bbb = context->h[1];
-    uint32_t ccc = context->h[2];
-    uint32_t ddd = context->h[3];
-    uint32_t eee = context->h[4];
-  
-    //Process message in 16-word blocks
-    uint32_t *x = context->x;
-  
-    //Convert from little-endian byte order to host byte order
-    for(i = 0; i < 16; i++)
-    {
-       x[i] = letoh32(x[i]);
-    }
-  
-    //Round 1
-    FF(aa, bb, cc, dd, ee, x[0],  11);
-    FF(ee, aa, bb, cc, dd, x[1],  14);
-    FF(dd, ee, aa, bb, cc, x[2],  15);
-    FF(cc, dd, ee, aa, bb, x[3],  12);
-    FF(bb, cc, dd, ee, aa, x[4],  5);
-    FF(aa, bb, cc, dd, ee, x[5],  8);
-    FF(ee, aa, bb, cc, dd, x[6],  7);
-    FF(dd, ee, aa, bb, cc, x[7],  9);
-    FF(cc, dd, ee, aa, bb, x[8],  11);
-    FF(bb, cc, dd, ee, aa, x[9],  13);
-    FF(aa, bb, cc, dd, ee, x[10], 14);
-    FF(ee, aa, bb, cc, dd, x[11], 15);
-    FF(dd, ee, aa, bb, cc, x[12], 6);
-    FF(cc, dd, ee, aa, bb, x[13], 7);
-    FF(bb, cc, dd, ee, aa, x[14], 9);
-    FF(aa, bb, cc, dd, ee, x[15], 8);
-  
-    //Round 2
-    GG(ee, aa, bb, cc, dd, x[7],  7);
-    GG(dd, ee, aa, bb, cc, x[4],  6);
-    GG(cc, dd, ee, aa, bb, x[13], 8);
-    GG(bb, cc, dd, ee, aa, x[1],  13);
-    GG(aa, bb, cc, dd, ee, x[10], 11);
-    GG(ee, aa, bb, cc, dd, x[6],  9);
-    GG(dd, ee, aa, bb, cc, x[15], 7);
-    GG(cc, dd, ee, aa, bb, x[3],  15);
-    GG(bb, cc, dd, ee, aa, x[12], 7);
-    GG(aa, bb, cc, dd, ee, x[0],  12);
-    GG(ee, aa, bb, cc, dd, x[9],  15);
-    GG(dd, ee, aa, bb, cc, x[5],  9);
-    GG(cc, dd, ee, aa, bb, x[2],  11);
-    GG(bb, cc, dd, ee, aa, x[14], 7);
-    GG(aa, bb, cc, dd, ee, x[11], 13);
-    GG(ee, aa, bb, cc, dd, x[8],  12);
-  
-    //Round 3
-    HH(dd, ee, aa, bb, cc, x[3],  11);
-    HH(cc, dd, ee, aa, bb, x[10], 13);
-    HH(bb, cc, dd, ee, aa, x[14], 6);
-    HH(aa, bb, cc, dd, ee, x[4],  7);
-    HH(ee, aa, bb, cc, dd, x[9],  14);
-    HH(dd, ee, aa, bb, cc, x[15], 9);
-    HH(cc, dd, ee, aa, bb, x[8],  13);
-    HH(bb, cc, dd, ee, aa, x[1],  15);
-    HH(aa, bb, cc, dd, ee, x[2],  14);
-    HH(ee, aa, bb, cc, dd, x[7],  8);
-    HH(dd, ee, aa, bb, cc, x[0],  13);
-    HH(cc, dd, ee, aa, bb, x[6],  6);
-    HH(bb, cc, dd, ee, aa, x[13], 5);
-    HH(aa, bb, cc, dd, ee, x[11], 12);
-    HH(ee, aa, bb, cc, dd, x[5],  7);
-    HH(dd, ee, aa, bb, cc, x[12], 5);
-  
-    //Round 4
-    II(cc, dd, ee, aa, bb, x[1],  11);
-    II(bb, cc, dd, ee, aa, x[9],  12);
-    II(aa, bb, cc, dd, ee, x[11], 14);
-    II(ee, aa, bb, cc, dd, x[10], 15);
-    II(dd, ee, aa, bb, cc, x[0],  14);
-    II(cc, dd, ee, aa, bb, x[8],  15);
-    II(bb, cc, dd, ee, aa, x[12], 9);
-    II(aa, bb, cc, dd, ee, x[4],  8);
-    II(ee, aa, bb, cc, dd, x[13], 9);
-    II(dd, ee, aa, bb, cc, x[3],  14);
-    II(cc, dd, ee, aa, bb, x[7],  5);
-    II(bb, cc, dd, ee, aa, x[15], 6);
-    II(aa, bb, cc, dd, ee, x[14], 8);
-    II(ee, aa, bb, cc, dd, x[5],  6);
-    II(dd, ee, aa, bb, cc, x[6],  5);
-    II(cc, dd, ee, aa, bb, x[2],  12);
-  
-    //Round 5
-    JJ(bb, cc, dd, ee, aa, x[4],  9);
-    JJ(aa, bb, cc, dd, ee, x[0],  15);
-    JJ(ee, aa, bb, cc, dd, x[5],  5);
-    JJ(dd, ee, aa, bb, cc, x[9],  11);
-    JJ(cc, dd, ee, aa, bb, x[7],  6);
-    JJ(bb, cc, dd, ee, aa, x[12], 8);
-    JJ(aa, bb, cc, dd, ee, x[2],  13);
-    JJ(ee, aa, bb, cc, dd, x[10], 12);
-    JJ(dd, ee, aa, bb, cc, x[14], 5);
-    JJ(cc, dd, ee, aa, bb, x[1],  12);
-    JJ(bb, cc, dd, ee, aa, x[3],  13);
-    JJ(aa, bb, cc, dd, ee, x[8],  14);
-    JJ(ee, aa, bb, cc, dd, x[11], 11);
-    JJ(dd, ee, aa, bb, cc, x[6],  8);
-    JJ(cc, dd, ee, aa, bb, x[15], 5);
-    JJ(bb, cc, dd, ee, aa, x[13], 6);
-  
-    //Parallel round 1
-    JJJ(aaa, bbb, ccc, ddd, eee, x[5],  8);
-    JJJ(eee, aaa, bbb, ccc, ddd, x[14], 9);
-    JJJ(ddd, eee, aaa, bbb, ccc, x[7],  9);
-    JJJ(ccc, ddd, eee, aaa, bbb, x[0],  11);
-    JJJ(bbb, ccc, ddd, eee, aaa, x[9],  13);
-    JJJ(aaa, bbb, ccc, ddd, eee, x[2],  15);
-    JJJ(eee, aaa, bbb, ccc, ddd, x[11], 15);
-    JJJ(ddd, eee, aaa, bbb, ccc, x[4],  5);
-    JJJ(ccc, ddd, eee, aaa, bbb, x[13], 7);
-    JJJ(bbb, ccc, ddd, eee, aaa, x[6],  7);
-    JJJ(aaa, bbb, ccc, ddd, eee, x[15], 8);
-    JJJ(eee, aaa, bbb, ccc, ddd, x[8],  11);
-    JJJ(ddd, eee, aaa, bbb, ccc, x[1],  14);
-    JJJ(ccc, ddd, eee, aaa, bbb, x[10], 14);
-    JJJ(bbb, ccc, ddd, eee, aaa, x[3],  12);
-    JJJ(aaa, bbb, ccc, ddd, eee, x[12], 6);
-  
-    //Parallel round 2
-    III(eee, aaa, bbb, ccc, ddd, x[6],   9);
-    III(ddd, eee, aaa, bbb, ccc, x[11], 13);
-    III(ccc, ddd, eee, aaa, bbb, x[3],  15);
-    III(bbb, ccc, ddd, eee, aaa, x[7],  7);
-    III(aaa, bbb, ccc, ddd, eee, x[0],  12);
-    III(eee, aaa, bbb, ccc, ddd, x[13], 8);
-    III(ddd, eee, aaa, bbb, ccc, x[5],  9);
-    III(ccc, ddd, eee, aaa, bbb, x[10], 11);
-    III(bbb, ccc, ddd, eee, aaa, x[14], 7);
-    III(aaa, bbb, ccc, ddd, eee, x[15], 7);
-    III(eee, aaa, bbb, ccc, ddd, x[8],  12);
-    III(ddd, eee, aaa, bbb, ccc, x[12], 7);
-    III(ccc, ddd, eee, aaa, bbb, x[4],  6);
-    III(bbb, ccc, ddd, eee, aaa, x[9],  15);
-    III(aaa, bbb, ccc, ddd, eee, x[1],  13);
-    III(eee, aaa, bbb, ccc, ddd, x[2],  11);
-  
-    //Parallel round 3
-    HHH(ddd, eee, aaa, bbb, ccc, x[15], 9);
-    HHH(ccc, ddd, eee, aaa, bbb, x[5],  7);
-    HHH(bbb, ccc, ddd, eee, aaa, x[1],  15);
-    HHH(aaa, bbb, ccc, ddd, eee, x[3],  11);
-    HHH(eee, aaa, bbb, ccc, ddd, x[7],  8);
-    HHH(ddd, eee, aaa, bbb, ccc, x[14], 6);
-    HHH(ccc, ddd, eee, aaa, bbb, x[6],  6);
-    HHH(bbb, ccc, ddd, eee, aaa, x[9],  14);
-    HHH(aaa, bbb, ccc, ddd, eee, x[11], 12);
-    HHH(eee, aaa, bbb, ccc, ddd, x[8],  13);
-    HHH(ddd, eee, aaa, bbb, ccc, x[12], 5);
-    HHH(ccc, ddd, eee, aaa, bbb, x[2],  14);
-    HHH(bbb, ccc, ddd, eee, aaa, x[10], 13);
-    HHH(aaa, bbb, ccc, ddd, eee, x[0],  13);
-    HHH(eee, aaa, bbb, ccc, ddd, x[4],  7);
-    HHH(ddd, eee, aaa, bbb, ccc, x[13], 5);
-  
-    //Parallel round 4
-    GGG(ccc, ddd, eee, aaa, bbb, x[8],  15);
-    GGG(bbb, ccc, ddd, eee, aaa, x[6],  5);
-    GGG(aaa, bbb, ccc, ddd, eee, x[4],  8);
-    GGG(eee, aaa, bbb, ccc, ddd, x[1],  11);
-    GGG(ddd, eee, aaa, bbb, ccc, x[3],  14);
-    GGG(ccc, ddd, eee, aaa, bbb, x[11], 14);
-    GGG(bbb, ccc, ddd, eee, aaa, x[15], 6);
-    GGG(aaa, bbb, ccc, ddd, eee, x[0],  14);
-    GGG(eee, aaa, bbb, ccc, ddd, x[5],  6);
-    GGG(ddd, eee, aaa, bbb, ccc, x[12], 9);
-    GGG(ccc, ddd, eee, aaa, bbb, x[2],  12);
-    GGG(bbb, ccc, ddd, eee, aaa, x[13], 9);
-    GGG(aaa, bbb, ccc, ddd, eee, x[9],  12);
-    GGG(eee, aaa, bbb, ccc, ddd, x[7],  5);
-    GGG(ddd, eee, aaa, bbb, ccc, x[10], 15);
-    GGG(ccc, ddd, eee, aaa, bbb, x[14], 8);
-  
-    //Parallel round 5
-    FFF(bbb, ccc, ddd, eee, aaa, x[12], 8);
-    FFF(aaa, bbb, ccc, ddd, eee, x[15], 5);
-    FFF(eee, aaa, bbb, ccc, ddd, x[10], 12);
-    FFF(ddd, eee, aaa, bbb, ccc, x[4],  9);
-    FFF(ccc, ddd, eee, aaa, bbb, x[1],  12);
-    FFF(bbb, ccc, ddd, eee, aaa, x[5],  5);
-    FFF(aaa, bbb, ccc, ddd, eee, x[8],  14);
-    FFF(eee, aaa, bbb, ccc, ddd, x[7],  6);
-    FFF(ddd, eee, aaa, bbb, ccc, x[6],  8);
-    FFF(ccc, ddd, eee, aaa, bbb, x[2],  13);
-    FFF(bbb, ccc, ddd, eee, aaa, x[13], 6);
-    FFF(aaa, bbb, ccc, ddd, eee, x[14], 5);
-    FFF(eee, aaa, bbb, ccc, ddd, x[0],  15);
-    FFF(ddd, eee, aaa, bbb, ccc, x[3],  13);
-    FFF(ccc, ddd, eee, aaa, bbb, x[9],  11);
-    FFF(bbb, ccc, ddd, eee, aaa, x[11], 11);
-  
-    //Combine results
-    ddd = context->h[1] + cc + ddd;
-    context->h[1] = context->h[2] + dd + eee;
-    context->h[2] = context->h[3] + ee + aaa;
-    context->h[3] = context->h[4] + aa + bbb;
-    context->h[4] = context->h[0] + bb + ccc;
-    context->h[0] = ddd;
- }
-  
- #endif
+}
+
+static const uint8_t ripemd160_padding[RIPEMD160_BLOCK_LENGTH] =
+{
+ 0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+};
+
+/*
+ * RIPEMD-160 final digest
+ */
+void ripemd160_Final( RIPEMD160_CTX *ctx, uint8_t output[RIPEMD160_DIGEST_LENGTH] )
+{
+    uint32_t last, padn;
+    uint32_t high, low;
+    uint8_t msglen[8];
+
+    high = ( ctx->total[0] >> 29 )
+         | ( ctx->total[1] <<  3 );
+    low  = ( ctx->total[0] <<  3 );
+
+    PUT_UINT32_LE( low,  msglen, 0 );
+    PUT_UINT32_LE( high, msglen, 4 );
+
+    last = ctx->total[0] & 0x3F;
+    padn = ( last < 56 ) ? ( 56 - last ) : ( 120 - last );
+
+    ripemd160_Update( ctx, ripemd160_padding, padn );
+    ripemd160_Update( ctx, msglen, 8 );
+
+    PUT_UINT32_LE( ctx->state[0], output,  0 );
+    PUT_UINT32_LE( ctx->state[1], output,  4 );
+    PUT_UINT32_LE( ctx->state[2], output,  8 );
+    PUT_UINT32_LE( ctx->state[3], output, 12 );
+    PUT_UINT32_LE( ctx->state[4], output, 16 );
+
+    memzero(ctx, sizeof(RIPEMD160_CTX));
+}
+
+/*
+ * output = RIPEMD-160( input buffer )
+ */
+void ripemd160(const uint8_t *msg, uint32_t msg_len, uint8_t hash[RIPEMD160_DIGEST_LENGTH])
+{
+    RIPEMD160_CTX ctx;
+    ripemd160_Init( &ctx );
+    ripemd160_Update( &ctx, msg, msg_len );
+    ripemd160_Final( &ctx, hash );
+}
