@@ -86,27 +86,77 @@ namespace smartcontract {
                 
                 if (orders[i[1]] == 0x00001000) { // plus
                     
+                    uint10_t result = [];
+                    unsigned long long k = 0;
                     
+                    while (k < orders[i[2]].length()) {
+                        
+                        result.append(orders[i[2[k]]] + orders[i[3[k]]]);
+                        k++;
+                        
+                    }
+                    
+                    results.append(result);
                     
                 };
                 if (orders[i[1]] == 0x00001001) { // minus
                     
+                    unsigned long int result = [];
+                    unsigned long long k = 0;
                     
+                    while (k < orders[i[2]].length()) {
+                        
+                        result.append(orders[i[2[k]]] - orders[i[3[k]]]);
+                        k++;
+                        
+                    }
+                    
+                    results.append(result);
                     
                 };
                 if (orders[i[1]] == 0x00001010) { // multiply
                     
+                    uint8192_t result = [];
+                    unsigned long long k = 0;
                     
+                    while (k < orders[i[2]].length()) {
+                        
+                        result.append(orders[i[2[k]]] * orders[i[3[k]]]);
+                        k++;
+                        
+                    }
+                    
+                    results.append(result);
                     
                 };
                 if (orders[i[1]] == 0x00001011) { // divide
                     
+                    uint8192_t result = [];
+                    unsigned long long k = 0;
                     
+                    while (k < orders[i[2]].length()) {
+                        
+                        result.append(orders[i[2[k]]] / orders[i[3[k]]]);
+                        k++;
+                        
+                    }
+                    
+                    results.append(result);
                     
                 };
                 if (orders[i[1]] == 0x00001100) { // square
                     
+                    uint8192_t result = [];
+                    unsigned long long k = 0;
                     
+                    while(k < orders[i[2]].length()) {
+                        
+                        result.append(orders[i[2[k]]] * orders[i[2[k]]]);
+                        k++;
+                        
+                    }
+                    
+                    result.append(result);
                     
                 };
                 if (orders[i[1]] == 0x00001101) { // square root
@@ -130,7 +180,7 @@ namespace smartcontract {
                     if (ledger.contains(orders[i[2]])) {
                         
                         ledger.erase(remove(ledger.begin(), ledger.end(), orders[i[2]]));
-                        results.append(true)
+                        results.append(true);
                         
                     } else {
                         
@@ -228,7 +278,7 @@ namespace smartcontract {
                 if (orders[i[1]] == "div" || orders[i[1]] == "DIV") {
                     
                     unsigned short result = [];
-                    unsigned long long k = 0;
+                    unsigned long int k = 0;
                     
                     while (k < orders[i[2]].length()) {
                         
@@ -248,7 +298,7 @@ namespace smartcontract {
                     while(k < orders[i[2]].length()) {
                         
                         result.append(orders[i[2[k]]] * orders[i[2[k]]]);
-                        k++
+                        k++;
                         
                     }
                     
