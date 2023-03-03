@@ -83,6 +83,32 @@ namespace blockchain {
 
 namespace Bitcoin {
     
+    struct block {
+        
+        uint32_t version;
+        uint256_t previousBlockHash,
+                  merkleRootHash;
+        uint32_t time,
+                 bits,
+                 nonce;
+        string transactionsNumber,
+               transactions;
+        
+    }
+    
+    struct transaction {
+        
+        uint32_t version;
+        string flag,
+               inCount,
+               in,
+               outCount,
+               out,
+               witnesses;
+        uint32_t lock_time;
+        
+    }
+    
     string blocksLedger = [],
            hashsLedger = [],
            privateKeys = {}, // format : "privatekey": [{"pubkey": "public key 1", "derivation": "derivation datas"}, {"pubkey": "public key 2", "derivation": "derivation datas"} ... ]
@@ -114,9 +140,10 @@ namespace Bitcoin {
         
     };
     
-    unsigned int createTransaction() {
+    unsigned int createTransaction(uint32_t version, string flag, string inCount, string in, string outCount, string out, string witnesses, uint32_t lockTime) {
         
-        
+        transaction TRANSACTION = transaction(version, flag, inCount, in, outCount, out, witnesses, lockTime);
+        return TRANSACTION;
         
     };
     unsigned int signTransaction() {
@@ -124,7 +151,7 @@ namespace Bitcoin {
         
         
     };
-    unsigned int verifyTransaction() {
+    unsigned int verifyTransaction(transaction TRANSACTION) {
         
         
         
