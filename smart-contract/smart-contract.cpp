@@ -177,12 +177,22 @@ namespace smartcontract {
                 
                 if (orders[i[1]] == 0x00001110) { // copy
                     
-                    
+                    if (blockchain.contains(orders[i[2]]) {
+                        
+                        ledger.append("'" +orders[i[2]] +"': {" +blockchain[orders[i[2]]] +"}");
+                        results.append(ledger[orders[i[2]]]);
+                        
+                    } else {
+                        
+                        results.append(false);
+                        
+                    };
                     
                 };
                 if (orders[i[1]] == 0x00001111) { // get
                     
-                    
+                    internet.tcpSocket.send(orders[i[2]], orders[i[3]]);
+                    results.append(internet.tcpSocket.receive());
                     
                 };
                 if (orders[i[1]] == 0x00010000) { // remove
@@ -336,7 +346,7 @@ namespace smartcontract {
                     if (blockchain.contains(orders[i[2]]) {
                         
                         ledger.append("'" +orders[i[2]] +"': {" +blockchain[orders[i[2]]] +"}");
-                        results.append(true);
+                        results.append(ledger[orders[i[2]]]);
                         
                     } else {
                         
