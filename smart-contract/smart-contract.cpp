@@ -65,7 +65,92 @@ namespace smartcontract {
                 };
                 if (orders[i[1]] == 0x00000010) { // or
                     
+                    uint8_t calculationResult,
+                            result = [];
+                    unsigned long long k = 0;
                     
+                    while (k < orders[i[2]].length()) {
+                        
+                        if (orders[i[2[k[0]]]] == 1 || orders[i[3[k[0]]]] == 1) {
+                            
+                            calculationResult[0] = 1;
+                            
+                        } else {
+                            
+                            calculationResult[0] = 0;
+                            
+                        };
+                        if (orders[i[2[k[1]]]] == 1 || orders[i[3[k[1]]]] == 1) {
+                            
+                            calculationResult[1] = 1;
+                            
+                        } else {
+                            
+                            calculationResult[1] = 0;
+                            
+                        };
+                        if (orders[i[2[k[2]]]] == 1 || orders[i[3[k[2]]]] == 1) {
+                            
+                            calculationResult[2] = 1;
+                            
+                        } else {
+                            
+                            calculationResult[2] = 0;
+                            
+                        };
+                        if (orders[i[2[k[3]]]] == 1 || orders[i[3[k[3]]]] == 1) {
+                            
+                            calculationResult[3] = 1;
+                            
+                        } else {
+                            
+                            calculationResult[3] = 0;
+                            
+                        };
+                        if (orders[i[2[k[4]]]] == 1 || orders[i[3[k[4]]]] == 1) {
+                            
+                            calculationResult[4] = 1;
+                            
+                        } else {
+                            
+                            calculationResult[4] = 0;
+                            
+                        };
+                        if (orders[i[2[k[5]]]] == 1 || orders[i[3[k[5]]]] == 1) {
+                            
+                            calculationResult[5] = 1;
+                            
+                        } else {
+                            
+                            calculationResult[5] = 0;
+                            
+                        };
+                        if (orders[i[2[k[6]]]] == 1 || orders[i[3[k[6]]]] == 1) {
+                            
+                            calculationResult[6] = 1;
+                            
+                        } else {
+                            
+                            calculationResult[6] = 0;
+                            
+                        };
+                        if (orders[i[2[k[7]]]] == 1 || orders[i[3[k[7]]]] == 1) {
+                            
+                            calculationResult[7] = 1;
+                            
+                        } else {
+                            
+                            calculationResult[7] = 0;
+                            
+                        };
+                        
+                        result.append(calculationResult);
+                        k++;
+                        
+                    }
+                    
+                    result = [];
+                    results.append(result);
                     
                 };
                 if (orders[i[1]] == 0x00000011) { // xor
@@ -78,19 +163,104 @@ namespace smartcontract {
                     
                     
                 };
-                if (orders[i[1]] == 0x00000101) { // not and
+                if (orders[i[1]] == 0x00000101) { // nand
                     
                     
                     
                 };
-                if (orders[i[1]] == 0x00000110) { // not or
+                if (orders[i[1]] == 0x00000110) { // nor
                     
                     
                     
                 };
-                if (orders[i[1]] == 0x00000111) { // xnot or
+                if (orders[i[1]] == 0x00000111) { // xnor
                     
+                    uint8_t calculationResult,
+                            result = [];
+                    unsigned long long k = 0;
                     
+                    while (k < orders[i[2]].length()) {
+                        
+                        if (orders[i[2[k[0]]]] == orders[i[3[k[0]]]]) {
+                            
+                            calculationResult[0] = 1;
+                            
+                        } else {
+                            
+                            calculationResult[0] = 0;
+                            
+                        };
+                        if (orders[i[2[k[1]]]] == orders[i[3[k[1]]]]) {
+                            
+                            calculationResult[1] = 1;
+                            
+                        } else {
+                            
+                            calculationResult[1] = 0;
+                            
+                        };
+                        if (orders[i[2[k[2]]]] == orders[i[3[k[2]]]]) {
+                            
+                            calculationResult[2] = 1;
+                            
+                        } else {
+                            
+                            calculationResult[2] = 0;
+                            
+                        };
+                        if (orders[i[2[k[3]]]] == orders[i[3[k[3]]]]) {
+                            
+                            calculationResult[3] = 1;
+                            
+                        } else {
+                            
+                            calculationResult[3] = 0;
+                            
+                        };
+                        if (orders[i[2[k[4]]]] == orders[i[3[k[4]]]]) {
+                            
+                            calculationResult[4] = 1;
+                            
+                        } else {
+                            
+                            calculationResult[4] = 0;
+                            
+                        };
+                        if (orders[i[2[k[5]]]] == orders[i[3[k[5]]]]) {
+                            
+                            calculationResult[5] = 1;
+                            
+                        } else {
+                            
+                            calculationResult[5] = 0;
+                            
+                        };
+                        if (orders[i[2[k[6]]]] == orders[i[3[k[6]]]]) {
+                            
+                            calculationResult[6] = 1;
+                            
+                        } else {
+                            
+                            calculationResult[6] = 0
+                            
+                        };
+                        if (orders[i[2[k[7]]]] == orders[i[3[k[7]]]]) {
+                            
+                            calculationResult[7] = 1;
+                            
+                        } else {
+                            
+                            calculationResult[7] = 0
+                            
+                        };
+                        
+                        
+                        result.append(calculationResult);
+                        k++;
+                        
+                    }
+                    
+                    results.append(result);
                     
                 };
                 
@@ -234,7 +404,92 @@ namespace smartcontract {
                 };
                 if (orders[i[1]] == "or" || orders[i[1]] == "OR") {
                     
+                    uint8_t calculationResult,
+                            result = [];
+                    unsigned long long k = 0;
                     
+                    while (k < orders[i[2]].length()) {
+                        
+                        if (orders[i[2[k[0]]]] == 1 || orders[i[3[k[0]]]] == 1) {
+                            
+                            calculationResult[0] = 1;
+                            
+                        } else {
+                            
+                            calculationResult[0] = 0;
+                            
+                        };
+                        if (orders[i[2[k[1]]]] == 1 || orders[i[3[k[1]]]] == 1) {
+                            
+                            calculationResult[1] = 1;
+                            
+                        } else {
+                            
+                            calculationResult[1] = 0;
+                            
+                        };
+                        if (orders[i[2[k[2]]]] == 1 || orders[i[3[k[2]]]] == 1) {
+                            
+                            calculationResult[2] = 1;
+                            
+                        } else {
+                            
+                            calculationResult[2] = 0;
+                            
+                        };
+                        if (orders[i[2[k[3]]]] == 1 || orders[i[3[k[3]]]] == 1) {
+                            
+                            calculationResult[3] = 1;
+                            
+                        } else {
+                            
+                            calculationResult[3] = 0;
+                            
+                        };
+                        if (orders[i[2[k[4]]]] == 1 || orders[i[3[k[4]]]] == 1) {
+                            
+                            calculationResult[4] = 1;
+                            
+                        } else {
+                            
+                            calculationResult[4] = 0;
+                            
+                        };
+                        if (orders[i[2[k[5]]]] == 1 || orders[i[3[k[5]]]] == 1) {
+                            
+                            calculationResult[5] = 1;
+                            
+                        } else {
+                            
+                            calculationResult[5] = 0;
+                            
+                        };
+                        if (orders[i[2[k[6]]]] == 1 || orders[i[3[k[6]]]] == 1) {
+                            
+                            calculationResult[6] = 1;
+                            
+                        } else {
+                            
+                            calculationResult[6] = 0;
+                            
+                        };
+                        if (orders[i[2[k[7]]]] == 1 || orders[i[3[k[7]]]] == 1) {
+                            
+                            calculationResult[7] = 1;
+                            
+                        } else {
+                            
+                            calculationResult[7] = 0;
+                            
+                        };
+                        
+                        result.append(calculationResult);
+                        k++;
+                        
+                    }
+                    
+                    result = [];
+                    results.append(result);
                     
                 };
                 if (orders[i[1]] == "xor" || orders[i[1]] "XOR") {
@@ -350,8 +605,8 @@ namespace smartcontract {
                 
                 if (orders[i[1]] == "add" || orders[i[1]] == "ADD") {
                     
-                    unsigned long long k = 0;
                     uint9_t result = [];
+                    unsigned long long k = 0;
                     
                     while (k < orders[i[2]].length()) {
                         
@@ -364,8 +619,8 @@ namespace smartcontract {
                 };
                 if (orders[i[1]] == "min" || orders[i[1]] == "MIN") {
                     
-                    unsigned long long k = 0;
                     unsigned short result = [];
+                    unsigned long long k = 0;
                     
                     while (k < orders[i[2]].length()) {
                         
