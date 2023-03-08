@@ -1,3 +1,4 @@
+#include <fstream>
 #include <string>
 #include "../derivation/derivation.cpp"
 #include "../encryption/encryption.cpp"
@@ -15,7 +16,9 @@ namespace wallet {
     
     unsigned int createWallet(string name, string privateKeys[], string message) {
         
+        Wallet WALLET = Wallet(name, privateKeys, message);
         
+        return WALLET;
         
     };
     unsigned int lockWallet(Wallet WALLET, string password) {
