@@ -11,7 +11,7 @@ namespace node {
         uint256_t transmissionErrors = 0;
         
         internet.blockchainSocket.send(datas);
-        receiversResponses = internet.blockchainSocket.receive();
+        receiversResponses = internet.blockchainSocket.recv();
         
         for (uint256_t i; i < receiversResponses.length; i++) {
             
