@@ -1,4 +1,4 @@
-namespace argon2 {
+namespace argonTwo {
     
     
     
