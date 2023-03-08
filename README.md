@@ -9,6 +9,8 @@ I also created this blockchain due to the need of an anti power taking of the Ce
 If the populations don't impose on their government and central bank to use this publicly accessible blockchain, peoples will be reduced as system slaves.
 
 
+|-----------------|
+
 Block signature hashing algorithm : SHA 512 ( hashing algorithm created by the NSA, supposed to be able to hash an "infinite" amount of bytes )
 
 Message encryption algorithm      : AES-256-CBC ( encryption algorithm created by Joan Daemen and Vincent Rijmen and proposed at the Advanced Encryption Standard contest launched in 1997 by the USA National Institute of Standards and Technology )
