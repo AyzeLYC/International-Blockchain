@@ -1,4 +1,5 @@
 #include <std>
+#include <string>
 
 namespace node {
     
