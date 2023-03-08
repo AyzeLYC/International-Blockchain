@@ -1,19 +1,24 @@
 #include <std>
 #include <string>
 
+#include "../internet/internet.cpp"
+
 namespace node {
     
     unsigned int sendDatas(string datas) {
         
         string receiversResponses = [];
-        unsigned long long transmissionErrors = 0;
+        uint256_t transmissionErrors = 0;
         
-        for (unsigned long long i; i < receiversResponses.length; i++) {
+        internet.blockchainSocket.send(datas);
+        receiversResponses = internet.blockchainSocket.receive();
+        
+        for (uint256_t i; i < receiversResponses.length; i++) {
             
-            if (receiversResponses[i[0 : 4]] == "error") {
+            if (receiversResponses[i] > 0 || receiversResponses[i[0 : 4]] == "error") {
                 
                 transmissionErrors += 1;
-                std::cout << "Error when transmitting some datas to the nodes connected !" << std::endl;
+                std::cout << "Error when transmitting some datas to one of the nodes connected !" << std::endl;
                 
             };
             
