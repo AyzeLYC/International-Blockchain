@@ -1,4 +1,4 @@
-namespace sha512 {
+namespace shaFivehundredtwelve {
     
     
     
