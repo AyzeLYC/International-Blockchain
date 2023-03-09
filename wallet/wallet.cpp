@@ -6,6 +6,9 @@
 
 namespace wallet {
     
+    uint256_t privateKey,
+              privateKeys[];
+    
     struct Wallet {
         
         string name,
