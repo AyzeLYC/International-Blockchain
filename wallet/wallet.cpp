@@ -60,4 +60,10 @@ namespace wallet {
         
     };
     
+    unsigned int sign(string datas, privateKey KEY) {
+        
+        
+        
+    };
+    
 }
