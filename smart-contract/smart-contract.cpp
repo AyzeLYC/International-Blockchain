@@ -25,6 +25,8 @@ namespace smartcontract {
      * CPY/00001110 address : Copy into the processing memory
      * GET/00001111 url : Get some datas from an URL
      * REM/00010000 addressString : Delete some datas from a datas ledger
+     *
+     * HSH/00010001 algorithm datas : Hash some datas and return the generated hash
     *\
     
     string ledger = {},
