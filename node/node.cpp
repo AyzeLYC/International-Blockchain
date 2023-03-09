@@ -38,13 +38,13 @@ namespace node {
         
         if (receiverResponse < 0 || receiverResponse[0 : 4] == "error") {
             
-            trasmissionErrors += 1;
+            transmissionErrors += 1;
             std::cout << "Error when transmitting some datas to the node " << toAddress << " : " << toPort << " !" << std::endl;
-            return 0;
+            return false;
             
         } else {
             
-            return receiverResponse;
+            return true;
             
         };
         
@@ -81,7 +81,7 @@ namespace node {
             
             receptionErrors += 1;
             std::cout << "Error while receiving some datas from " << fromAddress <<" !" << std::endl;
-            return 0;
+            return false;
             
         } else {
             
