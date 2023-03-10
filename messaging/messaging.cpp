@@ -61,24 +61,21 @@ namespace messaging {
     };
     unsigned int sendMessageToBlockchainNodes(Message MESSAGE) {
         
-        string responses[];
-        bool responsesValid[];
+        string responses[256];
+        unsigned short int responsesValid = 0;
         
         responses = node.sendDatas(MESSAGE);
         
         for (unsigned short int i; i < responses.length(); i++) {
             
-            if (responses[i] < 0 || responses[i] == "error") {
+            if (responses[i] >= 0 && responses[i] != "error") {
                 
-                
-                
-            } else {
-                
-                
+                responsesValid[i] += 1;
                 
             };
             
         }
+        return responsesValid;
         
     };
     
