@@ -43,7 +43,7 @@ namespace messaging {
         string response;
         bool responseValid;
         
-        response = node.sendDatasTo();
+        response = node.sendDatasTo(address, port, MESSAGE);
         
         if (response < 0 || response[0 : 4] == "error") {
             
@@ -61,7 +61,24 @@ namespace messaging {
     };
     unsigned int sendMessageToBlockchainNodes(Message MESSAGE) {
         
+        string responses[];
+        bool responsesValid[];
         
+        responses = node.sendDatas(MESSAGE);
+        
+        for (unsigned short int i; i < responses.length(); i++) {
+            
+            if (responses[i] < 0 || responses[i] == "error") {
+                
+                
+                
+            } else {
+                
+                
+                
+            };
+            
+        }
         
     };
     
