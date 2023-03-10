@@ -16,8 +16,9 @@ namespace messaging {
     
     unsigned int signMessage(wallet.privateKey PRIVATEKEY, wallet.publicKey PUBLICKEY, string MESSAGE) {
         
-        string encryptedMessage = new Message(PUBLICKEY, wallet.sign(message, PRIVATEKEY));
+        string encryptedMessage;
         
+        encryptedMessage = Message(PUBLICKEY, wallet.sign(message, PRIVATEKEY));
         return encryptedMessage;
         
     };
@@ -34,7 +35,6 @@ namespace messaging {
             messageValid = false;
             
         };
-        
         return messageValid;
         
     };
@@ -42,6 +42,8 @@ namespace messaging {
         
         string response;
         bool responseValid;
+        
+        response = node.sendDatasTo();
         
         if (response < 0 || response[0 : 4] == "error") {
             
@@ -54,7 +56,6 @@ namespace messaging {
             responseValid = true;
             
         };
-        
         return responseValid;
         
     };
