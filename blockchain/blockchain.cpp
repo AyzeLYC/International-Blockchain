@@ -35,7 +35,6 @@ namespace blockchain {
                 
             };
             transaction.ledger[0 : 16383].delete();
-            
             Block BLOCK = Block(creatorAddress, ledger.length, Date.now(), transactions, message);
             
         } else {
