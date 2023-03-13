@@ -82,6 +82,27 @@ namespace blockchain {
 
 namespace Bitcoin {
     
+    struct privateKey {
+        
+        uint256_t key;
+        
+    }
+    struct compressedPublicKey {
+        
+        uint264_t key;
+        
+    }
+    struct publicKey {
+        
+        uint512_t key;
+        
+    }
+    struct wallet {
+        
+        
+        
+    }
+    
     struct block {
         
         uint32_t version;
@@ -94,7 +115,6 @@ namespace Bitcoin {
                transactions;
         
     }
-    
     struct transaction {
         
         uint32_t version;
@@ -118,7 +138,7 @@ namespace Bitcoin {
         
     }
     
-    struct address {
+    struct ipaddress {
         
         uint32_t time;
         uint64_t services;
@@ -150,7 +170,7 @@ namespace Bitcoin {
         
         
     };
-    unsigned int createWalletFile() {
+    unsigned int createWalletFile(string name, bool load_on_start, string options, ) {
         
         
         
@@ -179,7 +199,11 @@ namespace Bitcoin {
     };
     unsigned int verifyTransaction(transaction TRANSACTION) {
         
-        
+        if () {
+            
+            
+            
+        };
         
     };
     
