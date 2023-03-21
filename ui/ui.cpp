@@ -2,29 +2,31 @@
 
 namespace ui {
     
+    struct pageTexts {
+        
+        string text,
+               textSize,
+               textCharacter,
+               textXCoordinate,
+               textYCoordinate;
+        
+    };
+    struct pageImages {
+        
+        string imageName,
+               imageXCoordinate,
+               imageYCoordinate,
+               image;
+        
+    };
     struct pageDatas {
         
-        string title,
-               xSize,
+        string xSize,
                ySize;
         uint24_t backgroundRGBColor;
         uint16_t backgroundOpacity;
-        struct pageTexts {
-            
-            string text,
-                   textSize,
-                   textCharacter,
-                   textXCoordinate,
-                   textYCoordinate;
-            
-        };
-        struct pageImages {
-            
-            string imageName,
-                   imageXCoordinate,
-                   imageYCoordinate;
-            
-        };
+        string texts = new pageTexts,
+               images = new pageImages;
         
     }
     
@@ -50,9 +52,10 @@ namespace ui {
     
     unsigned int createPage(string title, string xSize, string ySize, uint24_t backgroundRGBColor, uint16_t backgroundOpacity, string texts[], string images[]) {
         
-        if (applicationPages.) {
+        if (applicationPages.includes(title) == true) {
             
-            
+            string page = "'" +title +"': '" +(new pageDatas(xSize, ySize, backgroundRGBColor, backgroundOpacity, texts, images)) +"'";
+            applicationPages.append(page);
             
         };
         
