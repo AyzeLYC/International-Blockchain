@@ -2,6 +2,32 @@
 
 namespace ui {
     
+    struct pageDatas {
+        
+        string title,
+               xSize,
+               ySize;
+        uint24_t backgroundRGBColor;
+        uint16_t backgroundOpacity;
+        struct pageTexts {
+            
+            string text,
+                   textSize,
+                   textCharacter,
+                   textXCoordinate,
+                   textYCoordinate;
+            
+        };
+        struct pageImages {
+            
+            string imageName,
+                   imageXCoordinate,
+                   imageYCoordinate;
+            
+        };
+        
+    }
+    
     string applicationPages = {};
     
     unsigned int createApplication(string title, string xSize, string ySize, uint24_t backgroundRGBColor, uint16_t backgroundOpacity) {
@@ -22,28 +48,32 @@ namespace ui {
     };
     
     
-    unsigned int createPage(string title, string xSize, string ySize, uint24_t backgroundRGBColor, uint16_t backgroundOpacity) {
+    unsigned int createPage(string title, string xSize, string ySize, uint24_t backgroundRGBColor, uint16_t backgroundOpacity, string texts[], string images[]) {
+        
+        if (applicationPages.) {
+            
+            
+            
+        };
+        
+    };
+    unsigned int modifyPage(string title, string xSize, string ySize, uint24_t backgroundRGBColor, uint16_t backgroundOpacity, string texts[], string images[]) {
         
         
         
     };
-    unsigned int modifyPage(string title, string xSize, string ySize, uint24_t backgroundRGBColor, uint16_t backgroundOpacity) {
-        
-        
-        
-    };
-    unsigned int deletePage() {
+    unsigned int deletePage(string title) {
         
         
         
     };
     
-    unsigned int showPage() {
+    unsigned int showPage(string title) {
         
         
         
     };
-    unsigned int hidePage() {
+    unsigned int hidePage(string title) {
         
         
         
