@@ -9,14 +9,18 @@ namespace internet {
                serverType,
                serverProtocol,
                serverIp;
-        uint16_t serverPort;
+        uint16_t serverPort,
+                 maximumPing,
+                 maximumConnections;
         
     }
     
-    SOCKET blockchainSocket = socket(AF_INET, SOCK_STREAM, 0),
-           httpSocket = socket(AF_INET, SOCK_STREAM, 0),
-           pîngSocket = socket(AF_INET, SOCK_DGRAM, 0),
-           torSocket = socket(AF_INET, SOCK_STREAM, 0);
+    Socket SOCKETS[];
+    
+    SOCKET blockchainSocket = socket("AF_INET", "SOCK_STREAM", 0),
+           httpSocket = socket("AF_INET", "SOCK_STREAM", 0),
+           pîngSocket = socket("AF_INET", "SOCK_DGRAM", 0),
+           torSocket = socket("AF_INET", "SOCK_STREAM", 0);
     
     bind(blockchainSocket, {"AF_INET", 10000, "127.0.0.1"}, sizeof({"AF_INET", 10000, "127.0.0.1"}));
     bind(httpSocket, {"AF_INET", 10000, "127.0.0.1"}, sizeof({"AF_INET", 10000, "127.0.0.1"}));
@@ -43,15 +47,14 @@ namespace internet {
          pingSocketRead = read(pingSocketConnection, pingSocketBuffer, []),
          torSocketRead = read(torSocketConnection, torSocketBuffer, []);
     
-    unsigned int createUdpServer(string address, unsigned int port) {
+    unsigned int createServer(Server SERVER) {
         
+        SOCKET ServerSocket = new socket(SERVER[0], SERVER[1], SERVER[2]);
+        bind(ServerSocket, {SERVER[0], SERVER[6], SERVER[4]}, sizeof({SERVER[0], SERVER[6], SERVER[4]}));
+        listen(ServerSocket, SERVER[6]);
         
-        
-    };
-    unsigned int createTcpServer(int domain, int type, string address, unsigned int port) {
-        
-        
+        SOCKETS.append(ServerSocket);
         
     };
     
-};
+}
