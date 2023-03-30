@@ -3,6 +3,16 @@
 
 namespace internet {
     
+    struct Server {
+        
+        string serverIpFamily,
+               serverType,
+               serverProtocol,
+               serverIp;
+        uint16_t serverPort;
+        
+    }
+    
     SOCKET blockchainSocket = socket(AF_INET, SOCK_STREAM, 0),
            httpSocket = socket(AF_INET, SOCK_STREAM, 0),
            pîngSocket = socket(AF_INET, SOCK_DGRAM, 0),
