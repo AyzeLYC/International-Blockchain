@@ -1,8 +1,26 @@
 #include <string>
-#include <windows.h>
+#ifdef windows
+    #include <windows.h>
+    #include <iostream>
+#elif linuxbsed
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <unistd.h>
 
 namespace threading {
     
+    unsigned int threadCounter;
     
+    namespace calculate(unsigned int functionToCalculate) {
+        
+        DWORD threadId;
+        HANDLE work = CreateThread(0, 0, functionToCalculate, &threadCounter, 0, &threadId);
+        while (functionToCalculate) {
+            
+            functionToCalculate;
+            
+        };
+        
+    };
     
 }
