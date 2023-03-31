@@ -3,6 +3,7 @@
     #include <windows.h>
     #include <iostream>
 #elif linuxbsed
+    #include <pthread.h>
     #include <stdio.h>
     #include <stdlib.h>
     #include <unistd.h>
