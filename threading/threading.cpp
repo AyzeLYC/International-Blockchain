@@ -2,7 +2,7 @@
 #ifdef windows
     #include <windows.h>
     #include <iostream>
-#elif linuxbsed
+#elif linuxbased
     #include <pthread.h>
     #include <stdio.h>
     #include <stdlib.h>
