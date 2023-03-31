@@ -34,10 +34,17 @@ namespace main {
     };
     unsigned int stop() {
         
-        messaging.stop();
         internet.stop();
+        messaging.stop();
         smartcontract.stop();
         transaction.stop();
+        blockchain.stop();
+        decryption.stop();
+        node.stop();
+        wallet.stop();
+        hashing.stop();
+        cli.stop();
+        ui.stop();
         
     };
     
