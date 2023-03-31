@@ -2,18 +2,19 @@
 #include <std>
 #include <string>
 
-#include "blockchain/blockchain.cpp"
-#include "cli/cli.cpp"
-#include "derivation/derivation.cpp"
-#include "encryption/encryption.cpp"
-#include "hashing/hashing.cpp"
-#include "internet/internet.cpp"
-#include "messaging/messaging.cpp"
-#include "node/node.cpp"
-#include "smart-contract/smart-contract.cpp"
-#include "transaction/transaction.cpp"
-#include "ui/ui.cpp"
-#include "wallet/wallet.cpp"
+#include <blockchain/blockchain.cpp>
+#include <cli/cli.cpp>
+#include <derivation/derivation.cpp>
+#include <encryption/encryption.cpp>
+#include <hashing/hashing.cpp>
+#include <internet/internet.cpp>
+#include <messaging/messaging.cpp>
+#include <node/node.cpp>
+#include <smart-contract/smart-contract.cpp>
+#include <threading/threading.cpp>
+#include <transaction/transaction.cpp>
+#include <ui/ui.cpp>
+#include <wallet/wallet.cpp>
 
 namespace main {
     
